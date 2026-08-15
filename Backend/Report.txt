@@ -1,11 +1,11 @@
 ================================================================================
 3GPP RAG API Test Results
-Generated: 2026-08-15 17:41:07
+Generated: 2026-08-15 19:19:03
 ================================================================================
 
 Total queries: 27
-Successful:    23
-Errors:        3
+Successful:    26
+Errors:        0
 Skipped:       1
 
 --------------------------------------------------------------------------------
@@ -13,1386 +13,452 @@ Skipped:       1
 [1] ID: t1 | Category: Technical
     Query: What is the role of the AMF in 5G?
     Status: success
-    Elapsed: 10.57s
+    Elapsed: 13.66s
     Answer:
-        The Access and Mobility Management function (AMF) plays a crucial role in 5G networks. Its main functionalities include:
+        Based on the provided documents, the Access and Mobility Management function (AMF) includes the following roles and functionalities:
         
-        - Termination of RAN CP interface (N2)
-        - Termination of NAS (N1), NAS ciphering and integrity protection
-        - Registration management
-        - Connection management
+        **General Functionalities**
+        Some or all of these functionalities may be supported in a single AMF instance [Source: 23501-j50.docx, 23501-k10.docx]:
+        *   **Interface & Protocol Termination:**
+            *   Termination of RAN CP interface (N2) [Source: 23501-j50.docx, 23501-hf0.docx, 23501-k10.docx].
+            *   Termination of NAS (N1), including NAS ciphering and integrity protection [Source: 23501-j50.docx, 23501-k10.docx].
+        *   **Management Functions:**
+            *   Registration, Connection, Reachability, and Mobility management [Source: 23501-j50.docx, 23501-k10.docx].
+            *   Location Services management for regulatory services [Source: 23501-k10.docx].
+            *   UE mobility event notification [Source: 23501-k10.docx].
+        *   **Security & Authorization:**
+            *   Access Authentication and Access Authorization [Source: 23501-k10.docx].
+            *   Security Anchor Functionality (SEAF) as specified in TS 33.501 [Source: 23501-k10.docx].
+        *   **Messaging & Transport:**
+            *   Providing transport for SM messages between UE and SMF, and acting as a transparent proxy for routing them [Source: 23501-k10.docx].
+            *   Providing transport for SMS messages between UE and SMSF [Source: 23501-k10.docx].
+            *   Providing transport for Location Services messages between UE and LMF, as well as between RAN and LMF [Source: 23501-k10.docx].
+        *   **Specialized Support:**
+            *   Lawful intercept (for AMF events and interface to LI System) [Source: 23501-k10.docx].
+            *   EPS Bearer ID allocation for interworking with EPS [Source: 23501-k10.docx].
+            *   S-NSSAIs per TA mapping notification [Source: 23501-k10.docx].
+            *   Support for Control Plane and User Plane CIoT 5GS Optimisation [Source: 23501-k10.docx].
+            *   Support for restriction of use of Enhanced Coverage [Source: 23501-k10.docx].
+            *   Provisioning of external parameters (e.g., Network Configuration or Expected UE Behaviour parameters) [Source: 23501-k10.docx].
         
-        The AMF is responsible for managing the mobility of UEs, including registration, authentication, and connection management. It also provides the 5G-AN node with the weight factors for each TNL association of the AMF and can request the 5G-AN node to add or remove TNL associations to the AMF.
-        
-        The AMF selection functionality is supported by the 5G-AN (e.g. RAN, N3IWF) and is used to select an AMF instance for a given UE. The AMF selection functionality in the 5G-AN may consider the following factors for selecting the AMF Set:
-        
-        - AMF Region ID and AMF Set ID derived from GUAMI
-        - Requested NSSAI
-        - Local operator policies
-        - 5G CIoT features indicated in RRC signalling by the UE
-        - IAB-indication
-        - NB-IoT RAT Type
-        - Category M Indication
-        - NR RedCap Indication
-        
-        The AMF also supports the indication to the 5G-AN node of the set of TNL associations used for UE-associated signalling and the set of TNL associations used for non-UE associated signalling.
-        
-        **AMF Functionalities:**
-        
-        | Functionality | Description |
-        | --- | --- |
-        | Termination of RAN CP interface (N2) | Termination of RAN CP interface |
-        | Termination of NAS (N1), NAS ciphering and integrity protection | Termination of NAS, ciphering, and integrity protection |
-        | Registration management | Management of UE registration |
-        | Connection management | Management of UE connections |
-        
-        **AMF Selection Factors:**
-        
-        | Factor | Description |
-        | --- | --- |
-        | AMF Region ID and AMF Set ID derived from GUAMI | Derived from Global User Ambient Identity (GUAMI) |
-        | Requested NSSAI | Network Slice Selection Assistance Information (NSSAI) requested by the UE |
-        | Local operator policies | Policies defined by the local operator |
-        | 5G CIoT features indicated in RRC signalling by the UE | 5G CIoT features indicated in Radio Resource Control (RRC) signalling |
-        | IAB-indication | Indication of Internet of Things (IoT) Application Function (IAB) |
-        | NB-IoT RAT Type | Narrowband Internet of Things (NB-IoT) Radio Access Technology (RAT) Type |
-        | Category M Indication | Indication of Category M |
-        | NR RedCap Indication | Indication of NR RedCap |
-        
-        **References:**
-        
-        [Source: 23501-j50.docx]
-        [Source: 23501-j60.docx]
-        [Source: 23501-k00.docx]
-        [Source: 23501-k20.docx]
-        [Source: 23501-j70.docx]
-        [Source: 23501-hf0.docx]
-        [Source: 23501-ib0.docx]
-        [Source: 23501-ic0.docx]
+        **Interaction with 5G-AN**
+        *   **TNL Associations:** The AMF provides the 5G-AN node with weight factors for each TNL association, can request the 5G-AN to add or remove these associations, and indicates which associations are used for UE-associated versus non-UE associated signalling [Source: 23501-j70.docx].
+        *   **AMF Selection:** An AMF supports selection functionality to select an AMF for relocation or if the initially selected AMF was inappropriate (e.g., due to a change of Allowed NSSAI) [Source: 23501-j50.docx].
     Sources:
-        - 23501-j70.docx (score: 0.114)
-        - 23501-j60.docx (score: 0.114)
-        - 23501-k20.docx (score: 0.114)
+        - 23501-j70.docx (score: 5.948)
+        - 23501-j50.docx (score: 5.109)
+        - 23501-j50.docx (score: 4.113)
 
 ----------------------------------------
 
 [2] ID: t2 | Category: Technical
     Query: Explain the 5G QoS flow mapping.
-    Status: error
-    Error: HTTP 500: {"detail":"Error code: 413 - {'error': {'message': 'Request too large for model `llama-3.1-8b-instant` in organization `org_01m027q4a7eaerxaega60twcr5` service tier `on_demand` on tokens per minute (T
+    Status: success
+    Elapsed: 7.93s
+    Answer:
+        At the NAS level, the mapping of a QoS flow is characterized as follows:
+        
+        *   **Uplink Mapping:** QoS rules provided by the 5GC to the UE dictate the mapping between uplink User Plane traffic and QoS flows [Source: 38300-j20.docx, 38300-j00.docx].
+        *   **Radio Interface Treatment:** The NG-RAN uses a QoS profile provided by the 5GC to determine the treatment on the radio interface [Source: 38300-j20.docx, 38300-j00.docx].
+    Sources:
+        - 23501-j60.docx (score: 7.173)
+        - 23501-k10.docx (score: 6.768)
+        - 23501-j50.docx (score: 6.738)
 
 ----------------------------------------
 
 [3] ID: t3 | Category: Technical
     Query: What are the main functions of the gNB?
     Status: success
-    Elapsed: 13.84s
+    Elapsed: 17.91s
     Answer:
-        The main functions of the gNB are:
+        Based on the provided documents, the main functions and characteristics of the gNB are as follows:
         
-        - Functions for Radio Resource Management: 
-          - Radio Bearer Control
-          - Radio Admission Control
-          - Connection Mobility Control
-          - Dynamic allocation of resources to UEs in uplink, downlink and sidelink (scheduling)
-        
-        - IP and Ethernet header compression, uplink data decompression, encryption and integrity protection of data
-        
-        Additionally, the gNB:
-        
-        - Provides the intended service area information to the UEs in the relevant cell(s) as defined in TS 38.331 [12]
-        - Implements the NAS Node Selection Function specified in TS 38.410 [16]
-        - Allocates and co-ordinates the usage of A-IoT radio resources
-        - Confirms the request from the A-IoT CN node by replying with the Inventory Response message
-        - Is connected via the NG interface to the 5GC, more specifically to the AMF (Access and Mobility Management Function) by means of the NG-C interface and to the UPF (User Plane Function) by means of the NG-U interface (see TS 23.501 [3])
-        
-        The gNB may also be subdivided into non-NTN infrastructure gNB functions and the NTN Service Link provisioning system, which may consist of one or more NTN payloads and NTN Gateways.
+        *   **General Definition:** The gNB is the node that provides NR control plane and user plane protocol terminations towards the UE and is connected to the 5GC via the NG interface [Source: 38300-j30.docx, 38300-fm0.docx].
+        *   **Radio Resource Management:** The gNB hosts functions for:
+            *   Radio Bearer Control [Source: 38300-he0.docx]
+            *   Radio Admission Control [Source: 38300-he0.docx]
+            *   Connection Mobility Control [Source: 38300-he0.docx]
+            *   Scheduling (dynamic allocation of resources to UEs in downlink, uplink, and sidelink) [Source: 38300-he0.docx]
+        *   **Data Processing:** The gNB performs:
+            *   IP and Ethernet header compression [Source: 38300-he0.docx]
+            *   Uplink data decompression [Source: 38300-he0.docx]
+            *   Encryption and integrity protection of data [Source: 38300-he0.docx]
+        *   **Network and Service Functions:**
+            *   **NAS Node Selection:** It implements the NAS Node Selection Function as specified in TS 38.410 [Source: 38300-j10.docx, 38300-j00.docx].
+            *   **Service Area Information:** It provides intended service area information to UEs in relevant cells based on information received from the AMF [Source: 38300-j10.docx, 38300-j00.docx].
+            *   **A-IoT Support:** It allocates and co-ordinates the usage of A-IoT radio resources and handles Inventory Request messages from the A-IoT CN node by replying with an Inventory Response or Inventory Failure message [Source: 38300-j30.docx].
     Sources:
-        - 38300-he0.docx (score: 0.195)
-        - 38300-hf0.docx (score: 0.195)
-        - 38300-hh0.docx (score: 0.195)
+        - 38300-he0.docx (score: 7.142)
+        - 38300-j10.docx (score: 5.250)
+        - 38300-hg0.docx (score: 4.991)
 
 ----------------------------------------
 
 [4] ID: t4 | Category: Technical
     Query: What is the N2 interface?
     Status: success
-    Elapsed: 19.44s
+    Elapsed: 7.48s
     Answer:
-        The N2 interface is a control plane interface between the 5G-AN (5G Access Network) and the 5G Core. It maps to the NG-C interface as defined in TS 38.413 [34]. The N2 interface is used for procedures related to N2 Interface Management that are not related to an individual UE, such as configuration or reset of the N2 interface.
+        Based on the provided documents, the N2 interface is described as follows:
         
-        The N2 interface is supported by the following protocol stacks:
-        
-        - NGAP (Next Generation Access and Mobility Protocol)
-        - SCTP (Stream Control Transmission Protocol)
-        - IP (Internet Protocol)
-        
-        The N2 interface can be terminated at MWAB-gNB and UE-AMF, and it is optionally used as a concentrator for the N2 interface by the NR Femto GW. The NR Femto GW appears to the AMF as a gNB and to the NR Femto node(s) as an AMF.
-        
-        The N2 interface is used for the following procedures:
-        
-        - Configuration of the N2 interface
-        - Reset of the N2 interface
-        - Other N2 Interface Management procedures not related to an individual UE
-        
-        The N2 interface is secured by security mechanisms defined in TS 38.300 [27] and TS 38.413 [34].
-        
-        Here is a table summarizing the information:
-        
-        | Protocol Stack | Description |
-        | --- | --- |
-        | NGAP | Next Generation Access and Mobility Protocol |
-        | SCTP | Stream Control Transmission Protocol |
-        | IP | Internet Protocol |
-        
-        | N2 Interface Termination | Description |
-        | --- | --- |
-        | MWAB-gNB | Termination point for the N2 interface |
-        | UE-AMF | Termination point for the N2 interface |
-        
-        | NR Femto GW Functionality | Description |
-        | --- | --- |
-        | Concentrator | Optionally used as a concentrator for the N2 interface |
-        | gNB | Appears to the AMF as a gNB |
-        | AMF | Appears to the NR Femto node(s) as an AMF |
-        
-        | N2 Interface Procedures | Description |
-        | --- | --- |
-        | Configuration | Configuration of the N2 interface |
-        | Reset | Reset of the N2 interface |
-        | Other N2 Interface Management procedures | Procedures not related to an individual UE |
+        *   **General Function and Mapping:** N2 maps to NG-C as defined in TS 38.413 [Source: 23501-k20.docx]. It is used for the termination of the control plane to the 5G Core Network [Source: 23501-k00.docx].
+        *   **Procedures:** Procedures defined over N2 include those related to N2 Interface Management that are not related to an individual UE, such as the Reset or Configuration of the N2 interface [Source: 23501-k20.docx].
+        *   **Protocol Stacks and Termination:** 
+            *   In specific configurations, the N2 interface terminates at the UE-AMF and MWAB-gNB, utilizing SCTP/IP layer protocols and NGAP between them [Source: 23501-j80.docx].
+        *   **NR Femto GW Role:** 
+            *   The NR Femto GW can serve as a concentrator for the N2 interface [Source: 23501-j50.docx, 23501-j60.docx].
+            *   When acting as a concentrator, the NR Femto GW appears as a gNB to the AMF and as an AMF to the NR Femto node(s) [Source: 23501-j50.docx].
     Sources:
-        - 23501-j80.docx (score: 0.093)
-        - 23501-j50.docx (score: 0.093)
-        - 23501-j60.docx (score: 0.093)
+        - 23501-j80.docx (score: 6.208)
+        - 23501-j60.docx (score: 5.274)
+        - 23501-j50.docx (score: 4.048)
 
 ----------------------------------------
 
 [5] ID: t5 | Category: Technical
     Query: Describe the 5G registration procedure.
     Status: success
-    Elapsed: 31.23s
+    Elapsed: 7.08s
     Answer:
-        The 5G registration procedure involves the following steps:
+        Based on the provided documents, the registration procedures are described as follows:
         
-        1. **N5GC Device Connection**: The N5GC device connects to the W-AGF via a RG which is configured as a layer 2 bridge. The W-AGF is associated with a 5GC and acts on behalf of the N5GC device during its registration process.
-        
-        2. **Registration Procedure**: The registration procedure for the 5G-RG connecting to 5GC via NG-RAN is specified in TS 23.316 [79] clause 4.11. The registration procedure for the 5G-RG connecting to 5GC via W-5GAN is specified in TS 23.316 [79] clause 7.2.1.
-        
-        3. **Authentication**: The 5G-RG shall support both 5G-AKA and EAP-AKA’ and it shall be authenticated by the 3GPP home network.
-        
-        4. **Temporary Identifier Allocation**: A temporary identifier (5G-GUTI) is allocated to support user confidentiality protection.
-        
-        5. **Permanent Identifier Allocation**: A globally unique 5G Subscription Permanent Identifier (SUPI) is allocated to each subscriber in the 5G System and provisioned in the UDM/UDR.
-        
-        **Registration Procedure Details**:
-        
-        | Registration Method | Clause Reference |
-        | --- | --- |
-        | NG-RAN | TS 23.316 [79] clause 4.11 |
-        | W-5GAN | TS 23.316 [79] clause 7.2.1 |
-        
-        **Authentication Methods**:
-        
-        | Authentication Method | Supported |
-        | --- | --- |
-        | 5G-AKA | Yes |
-        | EAP-AKA’ | Yes |
-        
-        **Identifier Allocation**:
-        
-        | Identifier Type | Allocation Method |
-        | --- | --- |
-        | 5G-GUTI | Temporary allocation for user confidentiality protection |
-        | SUPI | Globally unique identifier allocated to each subscriber in the 5G System and provisioned in the UDM/UDR |
+        *   **N5GC Device Registration**: An N5GC device connects to the W-AGF through a RG configured as a layer 2 bridge [Source: 33501-ic0.docx, 33501-j40.doc]. The W-AGF is associated with a 5GC and acts on behalf of the N5GC device during the registration process [Source: 33501-ic0.docx].
+        *   **5G-RG Registration**:
+            *   **Via W-5GAN**: The procedure is specified in TS 23.316 clause 7.2.1 [Source: 33501-ic0.docx, 33501-k10.docx]. This process uses the Untrusted non-3GPP access procedure as its basis; the 5G-RG must be authenticated by the 3GPP home network and shall support both EAP-AKA' and 5G-AKA [Source: 33501-ic0.docx].
+            *   **Via NG-RAN**: The procedure is specified in TS 23.316 clause 4.11 [Source: 33501-k10.docx].
     Sources:
-        - 33501-ic0.docx (score: 0.067)
-        - 33501-gj0.docx (score: 0.067)
-        - 33501-k00.docx (score: 0.067)
+        - 33501-ic0.docx (score: 7.279)
+        - 33501-ic0.docx (score: 6.888)
+        - 33501-j40.doc (score: 6.571)
 
 ----------------------------------------
 
 [6] ID: t6 | Category: Technical
     Query: What security features does 5G provide?
     Status: success
-    Elapsed: 35.67s
+    Elapsed: 7.09s
     Answer:
-        Based on the provided context, the security features of 5G are not explicitly listed. However, we can infer some information about the security capabilities of 5G from the provided documents.
+        Based on the provided documents, the 5G system provides the following security features:
         
-        The security capabilities of 5G UE are mentioned in several documents, including [Source: 33501-j50.docx], [Source: 33501-j60.docx], [Source: 33501-hg0.docx], [Source: 33501-hf0.docx], [Source: 33501-gk0.docx], and [Source: 33501-gj0.docx]. According to these documents, the UE security capabilities for 5G AS and 5G NAS include:
-        
-        - Ciphering and integrity algorithms implemented in the UE
-        - Capabilities for NG-RAN and 5G NAS
-        - Capabilities for EPS, UTRAN, and GERAN if these access types are supported by the UE
-        
-        Additionally, the provided context mentions the mitigation of bidding down attacks, which is a security feature that prevents an attacker from making the UE and network entities believe that the other side does not support a security feature, even when both sides in fact support that security feature.
-        
-        However, the specific security features of 5G are not explicitly listed in the provided context.
+        *   **Mitigation of bidding down attacks**: The system shall ensure that attacks where an attacker makes the UE and network entities believe the other side does not support a security feature (even when both actually do) are prevented [Source: 33501-hg0.docx].
+        *   **Authentication and Authorization**: The 5G system is required to satisfy requirements regarding authentication and authorization [Source: 33501-hg0.docx, 33501-fj0.docx].
+        *   **Security Entities**:
+            *   **Security Edge Protection Proxy (SEPP)**: An entity situated at the perimeter of the PLMN [Source: 33501-fk0.docx].
+            *   **AUSF (Authentication Server Function)**: A security entity within the 5G Core network [Source: 33501-fk0.docx].
+        *   **Security Capabilities**: The system utilizes UE security capabilities, which consist of identifiers for implemented integrity and ciphering algorithms for 5G AS and 5G NAS [Source: 33501-j50.docx, 33501-ic0.docx].
+        *   **Authentication Data**: The 5G Home Environment Authentication Vector is used to authenticate the UE using 5G AKA, consisting of KAUSF, XRES*, AUTN, and RAND [Source: 33501-j40.doc].
+        *   **Secondary Cell Security**: The 5G AS Secondary Cell security context includes counters for replay protection, the UP Security Policy (network side), identifiers for selected AS level cryptographic algorithms, and cryptographic keys [Source: 33501-j40.doc].
     Sources:
-        - 33501-hg0.docx (score: 0.066)
-        - 33501-j60.docx (score: 0.066)
-        - 33501-k10.docx (score: 0.066)
+        - 33501-hg0.docx (score: 7.428)
+        - 33501-fj0.docx (score: 6.443)
+        - 33501-gk0.docx (score: 5.456)
 
 ----------------------------------------
 
 [7] ID: t7 | Category: Technical
     Query: What is 5G‑NR?
     Status: success
-    Elapsed: 27.34s
+    Elapsed: 7.62s
     Answer:
-        Unfortunately, the provided context does not directly answer the question about 5G-NR. However, it does mention 5G NR in the context of the following specifications:
-        
-        - 3GPP TS 38.300: "NR; NR and NG-RAN Overall Description" [Source: 23501-j70.docx]
-        - 3GPP TS 38.331: "NR; Radio Resource Control (RRC); Protocol Specification" [Source: 23501-j70.docx]
-        - 3GPP TS 38.211: "NR; Physical channels and modulation" [Source: 38300-i90.docx]
-        - 3GPP TS 38.214: "Technical Specification Group Radio Access Network; NR; Physical layer procedures for data" [Source: 38300-i80.docx]
-        
-        Based on this information, 5G-NR is likely referring to the New Radio (NR) technology, which is a 5G wireless technology standard. However, the provided context does not provide a detailed description of 5G-NR.
-        
-        If you are looking for a detailed description of 5G-NR, I recommend consulting the 3GPP TS 38.300 specification, which provides an overall description of the NR and NG-RAN.
+        I cannot find this information in the provided documents.
     Sources:
-        - 33501-k20.docx (score: 0.068)
-        - 33501-k00.docx (score: 0.068)
-        - 33501-k10.docx (score: 0.068)
 
 ----------------------------------------
 
 [8] ID: e1 | Category: Edge
     Query: What is AMF?
     Status: success
-    Elapsed: 32.93s
+    Elapsed: 10.99s
     Answer:
-        The Access and Mobility Management Function (AMF) is a network function that hosts the following main functions:
+        The AMF is the Access and Mobility Management function [Source: 23501-hf0.docx].
         
-        - NAS signalling termination;
-        - NAS signalling security;
-        - AS Security control;
-        - Inter CN node signalling for mobility between 3GPP access networks;
-        - Idle mode UE Reachability (including control and execution of paging retransmission);
-        - Registration Area management;
-        - Support of intra-system and inter-system mobility;
-        - Access Authentication;
-        - Access Authorization including check of roaming rights.
+        It includes the following functionality:
+        *   Termination of RAN CP interface (N2) [Source: 23501-hf0.docx].
+        *   AMF selection functionality to select an AMF for relocation or because the initially selected AMF was not appropriate to serve the UE (e.g. for roaming subscriber) [Source: 23501-k10.docx, 23501-hf0.docx].
+        *   Provision of the UE-AMBR provided by PCF to (R)AN if available [Source: 23501-hf0.docx].
+        *   Use of the N14 interface for AMF re-allocation and AMF to AMF information transfer, which may be intra-PLMN or inter-PLMN [Source: 23501-hf0.docx].
+        *   Optional functionality to support monitoring in roaming scenarios, such as the normalization of reports according to roaming agreements between VPLMN and HPLMN [Source: 23501-hf0.docx, 23501-j70.docx].
         
-        The AMF also includes the following functionalities:
-        
-        - Termination of RAN CP interface (N2);
-        - Access and Mobility Management Function (AMF);
-        - Data Network (DN), e.g. operator services, Internet access or 3rd party services;
-        - Unstructured Data Storage Function (UDSF);
-        - Network Exposure Function (NEF);
-        - Network Repository Function (NRF);
-        - Network Slice Admission Control Function (NSACF);
-        - Network Slice-specific and SNPN Authentication and Authorization Function (NSSAAF);
-        - Network Slice Selection Function (NSSF);
-        - Policy Control Function (PCF).
-        
-        The AMF uses the N14 interface for AMF re-allocation and AMF to AMF information transfer, which may be either intra-PLMN or inter-PLMN.
-        
-        [Source: 38300-ia0.docx, 38300-gm0.docx, 23501-hf0.docx, 23501-ib0.docx, 23501-ic0.docx]
+        Additionally, the AMF hosts the following main functions:
+        *   NAS signalling termination [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   NAS signalling security [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   AS Security control [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   Inter CN node signalling for mobility between 3GPP access networks [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   Idle mode UE Reachability, including control and execution of paging retransmission [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   Registration Area management [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   Support of intra-system and inter-system mobility [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   Access Authentication [Source: 38300-ia0.docx, 38300-gl0.docx]
+        *   Access Authorization including check of roaming rights [Source: 38300-gl0.docx]
     Sources:
-        - 23501-k10.docx (score: 0.114)
-        - 23501-hf0.docx (score: 0.051)
-        - 38300-ia0.docx (score: 0.046)
+        - 23501-k10.docx (score: 5.140)
+        - 23501-hf0.docx (score: 4.335)
+        - 38300-ia0.docx (score: 4.233)
 
 ----------------------------------------
 
 [9] ID: e2 | Category: Edge
     Query: Define NR.
     Status: success
-    Elapsed: 23.37s
+    Elapsed: 7.11s
     Answer:
-        Based on the provided context, NR is defined as "New Radio" in the following documents:
-        
-        - [Source: 23501-j70.docx]
-        [27]	3GPP TS 38.300: "NR; NR and NG-RAN Overall Description; Stage 2".
-        
-        - [Source: 23501-j80.docx]
-        [27]	3GPP TS 38.300: "NR; NR and NG-RAN Overall Description".
-        
-        - [Source: 38300-hf0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-fn0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-hg0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-ia0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-gm0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-gl0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-hh0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 38300-fm0.docx]
-        [16]	3GPP TS 38.410: "NG-RAN; NG general aspects and principles".
-        
-        - [Source: 23501-j50.docx]
-        [27]	3GPP TS 38.300: "NR; NR and NG-RAN Overall Description".
-        
-        - [Source: 23501-ib0.docx]
-        [27]	3GPP TS 38.300: "NR; NR and NG-RAN Overall Description".
-        
-        Here is a list of documents that define NR:
-        
-        - 3GPP TS 38.300: "NR; NR and NG-RAN Overall Description"
-        - 3GPP TS 38.410: "NG-RAN; NG general aspects and principles"
-        
-        Note: The term "New Radio" is not explicitly mentioned in the provided documents, but it is implied by the document titles.
+        I cannot find this information in the provided documents.
     Sources:
-        - 33501-j40.doc (score: 0.129)
-        - 23501-ic0.docx (score: 0.121)
-        - 23501-k20.docx (score: 0.121)
 
 ----------------------------------------
 
 [10] ID: e3 | Category: Edge
     Query: Tell me everything about 5G security.
     Status: success
-    Elapsed: 34.26s
+    Elapsed: 8.82s
     Answer:
-        **5G Security Overview**
+        Based on the provided documents, information regarding 5G security is as follows:
         
-        The 5G security context is established locally at the UE and a serving network domain, represented by the "5G security context data" stored at the UE and a serving network. This context consists of two main components:
+        **Security Architecture and Scope**
+        * The security architecture specifies security features, mechanisms, and procedures for the 5G System, the 5G Core, and the 5G New Radio [Source: 33501-gk0.docx].
+        * The 5G System architecture includes the following security entities:
+            * **Security Edge Protection Proxy (SEPP):** The entity located at the perimeter of the PLMN [Source: 33501-fj0.docx].
+            * **AUSF:** AUthentication Server Function, located in the 5G Core network [Source: 33501-fj0.docx].
         
-        * 5G NAS security context
-        * 5G AS security context for 3GPP access and/or 5G AS security context for non-3GPP access
+        **Security Contexts and Data**
+        * **5G security context:** A state established locally at the UE and a serving network domain, represented by "5G security context data" stored at both [Source: 33501-j60.docx].
+            * This data consists of the 5G NAS security context, and the 5G AS security context for 3GPP access and/or non-3GPP access [Source: 33501-j60.docx].
+        * **5G AS Secondary Cell security context:** This includes counters used for replay protection, the UP Security Policy at the network side, identifiers for selected AS level cryptographic algorithms for the secondary cell, and cryptographic keys at the AS level for the secondary cell with their identifiers [Source: 33501-gk0.docx, 33501-j40.doc].
+        * **5G Home Environment Authentication Vector:** Data used for authenticating the UE using 5G AKA, consisting of RAND, AUTN, XRES*, and KAUSF [Source: 33501-gk0.docx, 33501-j40.doc].
         
-        **5G AS Secondary Cell Security Context**
-        
-        The 5G AS Secondary Cell security context includes:
-        
-        * Cryptographic keys at AS level for secondary cell with their identifiers
-        * Identifier of the selected AS level cryptographic algorithms for secondary cell
-        * UP Security Policy at the network side
-        * Counters used for replay protection
-        
-        **5G Home Environment Authentication Vector**
-        
-        The 5G Home Environment Authentication Vector consists of:
-        
-        * RAND (Random Number)
-        * AUTN (Authentication Token)
-        * XRES* (Expected Response)
-        * KAUSF (Key Agreement User-Specific Key)
-        
-        **Security Entities in the 5G Core Network**
-        
-        The 5G System architecture introduces the following security entities in the 5G Core network:
-        
-        | Security Entity | Description |
-        | --- | --- |
-        | SEPP (Security Edge Protection Proxy) | Entity sitting at the perimeter of the PLMN |
-        | AUSF (Authentication Server Function) | AUthentication Server Function |
-        
-        **5G Security Architecture**
-        
-        The 5G security architecture includes the following components:
-        
-        * UE (User Equipment)
-        * Serving Network
-        * 5G Core Network
-        * Security Edge Protection Proxy (SEPP)
-        * Authentication Server Function (AUSF)
-        
-        **5G Security Procedures**
-        
-        Existing security procedures defined in this document are reused for 5G-RG (Radio Access Network) connections via wireline access network (W-5GAN) or via Fixed Wireless Access (FWA).
+        **Security Requirements and Procedures**
+        * **General Requirements:**
+            * **Bidding down attacks:** It must be ensured that attacks where an attacker makes the UE and network entities believe the other does not support a security feature (when both actually do) are prevented [Source: 33501-fk0.docx].
+            * **Transmission restrictions:** Non-current 5G security contexts or 5G authentication vectors shall not be transmitted to a different 5G serving network domain [Source: 33501-fj0.docx].
+        * **Interworking and Access:**
+            * **EPS Interworking:** Only interaction between 5G and EPS serving network domains is addressed; no direct interworking between 5G networks and generations prior to EPS is foreseen [Source: 33501-fj0.docx].
+            * **5G-RG:** The 5G-RG acts as a 5G UE and connects to the 5GC via Fixed Wireless Access (FWA) or wireline access network (W-5GAN), reusing existing security procedures [Source: 33501-j40.doc].
     Sources:
-        - 33501-j60.docx (score: 0.043)
-        - 33501-j70.docx (score: 0.043)
-        - 33501-hf0.docx (score: 0.043)
+        - 33501-j60.docx (score: 3.389)
+        - 33501-gk0.docx (score: 3.302)
+        - 33501-j40.doc (score: 3.302)
 
 ----------------------------------------
 
 [11] ID: e4 | Category: Edge
     Query: Summarize the 5G architecture.
     Status: success
-    Elapsed: 27.87s
+    Elapsed: 7.51s
     Answer:
-        The 5G System architecture is defined to support data connectivity and services, enabling deployments to use techniques such as Network Function Virtualization and Software Defined Networking. The 5G System architecture shall leverage service-based interactions between Control Plane (CP) Network Functions where identified.
+        Based on the provided documents, the 5G architecture can be summarized as follows:
         
-        The main network functions required to support 5GC access from N5CW devices include:
-        
-        - The architecture diagram in Figure 4.2.8.5.2-1 is based on the general 5GS architecture diagrams in clause 4.2.
-        - The main network functions required to support 5GC access from N5CW devices are not explicitly listed in the provided documents.
-        
-        The 5G System provides data connectivity and services, covering both roaming and non-roaming scenarios in all aspects, including interworking between 5GS and EPS, mobility within 5GS, QoS, policy control and charging, authentication, and general 5G System wide features.
-        
-        Here is a summary of the 5G architecture in a table format:
-        
-        | **Feature** | **Description** |
-        | --- | --- |
-        | Architecture | Supports data connectivity and services, leveraging service-based interactions between Control Plane (CP) Network Functions. |
-        | Network Functions | Main network functions required to support 5GC access from N5CW devices are not explicitly listed. |
-        | Deployment | Enables deployments to use techniques such as Network Function Virtualization and Software Defined Networking. |
-        | Scenarios | Covers both roaming and non-roaming scenarios in all aspects, including interworking between 5GS and EPS, mobility within 5GS, QoS, policy control and charging, authentication, and general 5G System wide features. |
-        
-        Citations:
-        [Source: 23501-k00.docx]
-        [Source: 23501-j50.docx]
-        [Source: 23501-j80.docx]
-        [Source: 23501-hf0.docx]
-        [Source: 23501-j60.docx]
-        [Source: 23501-k10.docx]
-        [Source: 23501-ic0.docx]
-        [Source: 23501-ib0.docx]
-        [Source: 23501-k20.docx]
-        [Source: 33501-fk0.docx]
-        [Source: 33501-fj0.docx]
-        [Source: 33501-gj0.docx]
+        *   **General Definition and Purpose:** The 5G System (5GS) architecture is defined to provide services and data connectivity [Source: 23501-ic0.docx]. It is designed to support deployments utilizing Software Defined Networking and Network Function Virtualization [Source: 23501-k00.docx].
+        *   **Key Architectural Concepts:**
+            *   **Service-Based Interactions:** The architecture leverages service-based interactions between Control Plane (CP) Network Functions where identified [Source: 23501-k00.docx].
+            *   **Scope:** The system architecture covers various aspects, including mobility within the 5GS, policy control and charging, QoS, authentication, and interworking between the 5GS and EPS, across both roaming and non-roaming scenarios [Source: 23501-ic0.docx].
+        *   **Specific Implementations:** For N5CW devices, the reference architecture is based on general 5GS architecture diagrams and identifies the main network functions required to support 5GC access [Source: 23501-j70.docx, 23501-hf0.docx].
+        *   **Security:** The security architecture specifies the security mechanisms, features, and procedures performed within the 5G Core, the 5G System, and the 5G New Radio [Source: 33501-fk0.docx].
     Sources:
-        - 23501-k00.docx (score: 0.059)
-        - 23501-j50.docx (score: 0.059)
-        - 23501-j80.docx (score: 0.059)
+        - 23501-k00.docx (score: 4.929)
+        - 23501-j70.docx (score: 4.448)
+        - 23501-hf0.docx (score: 4.197)
 
 ----------------------------------------
 
 [12] ID: e5 | Category: Edge
     Query: What is the difference between QoS and QoE in 5G?
     Status: success
-    Elapsed: 51.91s
+    Elapsed: 7.40s
     Answer:
-        I cannot find information about the difference between QoS and QoE in the provided documents.
+        I cannot find this information in the provided documents.
     Sources:
-        - 23501-k10.docx (score: 0.121)
-        - 23501-k00.docx (score: 0.121)
-        - 23501-j80.docx (score: 0.121)
 
 ----------------------------------------
 
 [13] ID: e6 | Category: Edge
     Query: Explain the 5G authentication procedure step by step.
     Status: success
-    Elapsed: 26.02s
+    Elapsed: 6.84s
     Answer:
-        Based on the provided context, the 5G authentication procedure is described in multiple documents. Here's a step-by-step explanation of the 5G authentication procedure:
-        
-        **Step 1: Authentication Framework**
-        The authentication framework defined in clause 6.1.3 shall be used to authenticate the 5G-RG (or UE) [Source: 33501-j50.docx, 33501-k20.docx, etc.].
-        
-        **Step 2: Authentication Data**
-        The authentication data consists of:
-        - RAND (Random Number)
-        - AUTN (Authentication Token)
-        - XRES* (Expected Response)
-        - KAUSF (Key Authentication and Authorization)
-        
-        This authentication data is used for the purpose of authenticating the UE using 5G AKA (Authentication and Key Agreement) [Source: 33501-gk0.docx, 33501-k00.docx, etc.].
-        
-        **Step 3: Secondary Authentication Procedures**
-        In case of 5G-RG connects to 5GC via 5G-RAN, the secondary authentication procedures between UE and external data networks via the 5G Network as described in clause 11 shall apply [Source: 33501-hf0.docx, 33501-gj0.docx, etc.].
-        
-        **Step 4: Security Context**
-        The 5G AS Secondary Cell security context includes:
-        - Cryptographic keys at AS level for secondary cell with their identifiers
-        - Identifier of the selected AS level cryptographic algorithms for secondary cell
-        - UP Security Policy at the network side
-        - Counters used for replay protection
-        
-        This security context is used to secure the secondary cell [Source: 33501-gk0.docx, 33501-k00.docx, etc.].
-        
-        Here's a summary of the 5G authentication procedure in a table format:
-        
-        | Step | Description |
-        | --- | --- |
-        | 1 | Authentication framework defined in clause 6.1.3 |
-        | 2 | Authentication data consists of RAND, AUTN, XRES*, and KAUSF |
-        | 3 | Secondary authentication procedures between UE and external data networks via 5G Network |
-        | 4 | 5G AS Secondary Cell security context includes cryptographic keys, algorithms, UP Security Policy, and replay protection counters |
-        
-        Note: The provided context is repetitive, and the information is scattered across multiple documents. This answer combines the relevant information from all the documents to provide a comprehensive explanation of the 5G authentication procedure.
+        I cannot find this information in the provided documents.
     Sources:
-        - 33501-j50.docx (score: 0.072)
-        - 33501-k20.docx (score: 0.072)
-        - 33501-ic0.docx (score: 0.072)
 
 ----------------------------------------
 
 [14] ID: o1 | Category: Out-of-Scope
     Query: Who is the CEO of Nokia?
     Status: success
-    Elapsed: 7.78s
+    Elapsed: 3.14s
     Answer:
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 5G System Architecture is based on Service-Based Architecture (SBA)
-        - 5G System Architecture is based on Network Slicing
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G
+        I cannot find sufficient information to answer this question in the provided 3GPP documents.
     Sources:
-        - 33501-j40.doc (score: 0.441)
-        - 33501-j40.doc (score: 0.265)
-        - 33501-j40.doc (score: 0.079)
 
 ----------------------------------------
 
 [15] ID: o2 | Category: Out-of-Scope
     Query: How much does a 5G base station cost?
     Status: success
-    Elapsed: 24.36s
+    Elapsed: 3.39s
     Answer:
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 5G System Architecture is based on Service-Based Architecture (SBA)
-        - 5G System Architecture is based on Network Slicing
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G
+        I cannot find sufficient information to answer this question in the provided 3GPP documents.
     Sources:
-        - 33501-j40.doc (score: 0.456)
-        - 33501-j40.doc (score: 0.168)
-        - 23501-ic0.docx (score: 0.069)
 
 ----------------------------------------
 
 [16] ID: o3 | Category: Out-of-Scope
     Query: What is the weather today?
     Status: success
-    Elapsed: 21.92s
+    Elapsed: 3.42s
     Answer:
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 5G System Architecture is based on Service-Based Architecture (SBA)
-        - 5G System Architecture is based on Network Slicing
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G
+        I cannot find sufficient information to answer this question in the provided 3GPP documents.
     Sources:
-        - 33501-j40.doc (score: 0.045)
-        - 33501-j40.doc (score: 0.045)
-        - 33501-j40.doc (score: 0.045)
 
 ----------------------------------------
 
 [17] ID: o4 | Category: Out-of-Scope
     Query: Explain the meaning of life.
     Status: success
-    Elapsed: 22.11s
+    Elapsed: 2.86s
     Answer:
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 5G System Architecture is based on Service-Based Architecture (SBA)
-        - 5G System Architecture is based on Network Slicing
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G System'
-        - 3GPP TS 23.501: 'System Architecture for the 5G System' 
-        - 3GPP TS 23.502: 'Procedures for the 5G
+        I cannot find sufficient information to answer this question in the provided 3GPP documents.
     Sources:
-        - 33501-j40.doc (score: 0.276)
-        - 33501-j40.doc (score: 0.222)
-        - 33501-j40.doc (score: 0.217)
 
 ----------------------------------------
 
 [18] ID: s1 | Category: Stress
     Query: What is 5G?
     Status: success
-    Elapsed: 40.75s
+    Elapsed: 7.69s
     Answer:
-        The 5G System provides data connectivity and services. This specification covers both roaming and non-roaming scenarios in all aspects, including interworking between 5GS and EPS, mobility within 5GS, QoS, policy control and charging, authentication and in general 5G System wide features e.g. SMS, Location Services, Emergency Services.
+        Based on the provided documents, 5G is described in the following terms:
         
-        The 5G architecture is defined as service-based and the interaction between network functions is represented in two ways.
-        
-        - A service-based representation, where network functions (e.g. AMF) within the Control Plane enables other authorized network functions to access their services. This representation also includes point-to-point reference points where necessary.
-        
-        A 5G-RG is a RG capable of connecting to 5GC playing the role of a UE with regard to the 5G core. It supports secure element and exchanges N1 signalling with 5GC. The 5G-RG can be either a 5G-BRG or 5G-CRG.
-        
-        Access Traffic Steering is the procedure that selects an access network for a new service data flow and transfers the traffic of this service data flow over the selected access network.
-        
-        A 5G Access Network is an access network comprising a NG-RAN and/or non-3GPP AN connecting to a 5G Core Network.
-        
-        A 5G LAN-Virtual Network is a virtual network over the 5G system capable of supporting 5G LAN-type service.
-        
-        A 5G VN Group is a set of UEs using private communication for 5G LAN-type service.
-        
-        [Source: 23501-k20.docx, 23501-j60.docx, 23501-j70.docx, 23501-j80.docx, 23501-j50.docx, 23501-k00.docx, 23501-k10.docx, 23501-hf0.docx]
+        *   **5G System:** Provides data connectivity and services, covering aspects such as mobility within 5GS, QoS, policy control and charging, authentication, and system-wide features (e.g., Location Services, Emergency Services, and SMS), including both roaming and non-roaming scenarios and interworking between 5GS and EPS [Source: 23501-k20.docx].
+        *   **5G Architecture:** Defined as service-based, where network functions in the Control Plane (such as AMF) allow other authorized network functions to access their services [Source: 23501-k20.docx].
+        *   **5G Core Network:** The core network specified in the documents which connects to a 5G Access Network [Source: 23501-k20.docx].
+        *   **5G Access Network:** An access network connecting to a 5G Core Network, comprising a non-3GPP AN and/or a NG-RAN [Source: 23501-k10.docx, 23501-k00.docx].
     Sources:
-        - 23501-k20.docx (score: 0.064)
-        - 23501-k10.docx (score: 0.064)
-        - 23501-k00.docx (score: 0.064)
+        - 23501-k20.docx (score: 7.646)
+        - 23501-k20.docx (score: 7.018)
+        - 23501-k20.docx (score: 6.573)
 
 ----------------------------------------
 
 [19] ID: s2 | Category: Stress
     Query: Tell me about the AMF, SMF, and UPF.
-    Status: error
-    Error: HTTP 500: {"detail":"Error code: 413 - {'error': {'message': 'Request too large for model `llama-3.1-8b-instant` in organization `org_01m027q4a7eaerxaega60twcr5` service tier `on_demand` on tokens per minute (T
+    Status: success
+    Elapsed: 12.02s
+    Answer:
+        Based on the provided documents, here is the information regarding the AMF, SMF, and UPF:
+        
+        **Access and Mobility Management Function (AMF)**
+        The AMF includes the following functionalities:
+        *   **Signalling and Security:** Termination of NAS (N1), NAS ciphering and integrity protection, NAS signalling termination, NAS signalling security, AS Security control, and Security Anchor Functionality (SEAF) [Source: 23501-k10.docx, 38300-j00.docx].
+        *   **Management:** Registration management, Connection management, Reachability management (including Idle mode UE Reachability and paging retransmission), Mobility Management (including support for intra-system and inter-system mobility, and Registration Area management), and Location Services management for regulatory services [Source: 23501-k10.docx, 38300-j00.docx].
+        *   **Access and Authorization:** Access Authentication and Access Authorization, including the check of roaming rights [Source: 23501-k10.docx, 38300-j00.docx].
+        *   **Interfacing and Transport:** Termination of RAN CP interface (N2), providing transport for SM messages between UE and SMF, acting as a transparent proxy for routing SM messages, providing transport for SMS messages between UE and SMSF, and providing transport for Location Services messages between UE/RAN and LMF [Source: 23501-k10.docx].
+        *   **Other Functions:** SMF selection, support for Network Slicing, selection of CIoT 5GS optimisations (both Control Plane and User Plane), support for restriction of use of Enhanced Coverage, Lawful intercept, EPS Bearer ID allocation for interworking with EPS, UE mobility event notification, S-NSSAIs per TA mapping notification, and provisioning of external parameters [Source: 23501-k10.docx, 38300-j00.docx].
+        *   **Relay Capabilities:** The AMF may relay information to the SMF as part of session management signalling for a new PDU Session [Source: 23501-ib0.docx].
+        
+        **Session Management Function (SMF)**
+        The SMF hosts the following main functions:
+        *   Session Management [Source: 38300-i90.docx].
+        *   UE IP address allocation and management [Source: 38300-i90.docx].
+        *   Selection and control of UP function [Source: 38300-i90.docx].
+        *   Configuration of traffic steering at UPF to route traffic to the proper destination [Source: 38300-i90.docx].
+        *   Control part of policy enforcement and QoS [Source: 38300-i90.docx].
+        *   Downlink Data Notification [Source: 38300-i90.docx].
+        *   **Information Acquisition:** The SMF may use N4 to acquire information regarding the user plane interfaces of UPF(s) [Source: 23501-ib0.docx].
+        
+        **User Plane Function (UPF)**
+        The UPF hosts the following main functions:
+        *   Packet routing & forwarding [Source: 38300-j00.docx].
+        *   Packet inspection and the User plane part of Policy rule enforcement [Source: 38300-j00.docx].
+        *   Anchor point for Intra-/Inter-RAT mobility (when applicable) [Source: 38300-j00.docx].
+        *   External PDU session point of interconnect to Data Network [Source: 38300-j00.docx].
+        *   Traffic usage reporting [Source: 38300-j00.docx].
+        *   Uplink classifier to support routing traffic flows to a data network [Source: 38300-j00.docx].
+        *   Branching point to support multi-homed PDU session [Source: 38300-j00.docx].
+        *   QoS handling for user plane [Source: 38300-j00.docx].
+    Sources:
+        - 23501-ib0.docx (score: 4.556)
+        - 38300-i90.docx (score: 3.692)
+        - 38300-j00.docx (score: 3.034)
 
 ----------------------------------------
 
 [20] ID: s3 | Category: Stress
     Query: What is the role of the AMF in 5G? Also explain how it interacts with the gNB.
     Status: success
-    Elapsed: 19.99s
+    Elapsed: 17.49s
     Answer:
-        The role of the AMF (Access and Mobility Management Function) in 5G is to manage the access and mobility of User Equipment (UE) in the 5G network. 
+        Based on the provided documents, the role and interactions of the AMF are as follows:
         
-        The AMF is responsible for:
+        **Role of the AMF**
+        The Access and Mobility Management function (AMF) includes the following functionalities:
+        *   Registration management [Source: 23501-k20.docx].
+        *   Connection management [Source: 23501-k20.docx].
+        *   Termination of NAS (N1), as well as NAS ciphering and integrity protection [Source: 23501-k20.docx].
+        *   Termination of the RAN CP interface (N2) [Source: 23501-k20.docx].
         
-        - Managing the 5G security context of the UE
-        - Handling UE authentication and authorization
-        - Managing UE mobility and handovers between different gNBs
-        - Providing location information and tracking area updates to the UE
-        
-        The AMF interacts with the gNB in the following ways:
-        
-        - The AMF sends the complete UE 5G security capabilities to the gNB when establishing an AS security context.
-        - The AMF receives a Handover Required message from the gNB, including the UE's identity, when the gNB needs to perform a handover.
-        - The AMF manages the handover process by sending the necessary information to the target gNB and updating the UE's location information.
-        
-        Here is a table summarizing the interaction between the AMF and the gNB:
-        
-        | Action | Description |
-        | --- | --- |
-        | AMF sends UE 5G security capabilities to gNB | Establishes AS security context |
-        | gNB sends Handover Required message to AMF | Requests handover |
-        | AMF manages handover process | Updates UE location information and sends necessary information to target gNB |
-        
-        Source:
-        - [Source: 38300-he0.docx]
-        - [Source: 38300-i90.docx]
-        - [Source: 38300-j20.docx]
-        - [Source: 38300-j10.docx]
-        - [Source: 38300-j00.docx]
-        - [Source: 38300-ia0.docx]
-        - [Source: 38300-j30.docx]
-        - [Source: 38300-i80.docx]
-        - [Source: 38300-hh0.docx]
-        - [Source: 38300-hg0.docx]
-        - [Source: 38300-hf0.docx]
-        - [Source: 33501-k00.docx]
-        - [Source: 33501-gj0.docx]
-        - [Source: 33501-fk0.docx]
-        - [Source: 33501-fj0.docx]
-        - [Source: 33501-k10.docx]
-        - [Source: 33501-ic0.docx]
-        - [Source: 33501-j70.docx]
-        - [Source: 33501-j50.docx]
-        - [Source: 33501-hg0.docx]
-        - [Source: 33501-gk0.docx]
-        - [Source: 33501-ib0.docx]
-        - [Source: 33501-hf0.docx]
-        - [Source: 33501-j60.docx]
+        **Interactions with the gNB**
+        *   **Security Context Establishment:** When the AS security context is to be established in the gNB, the AMF sends the complete UE 5G security capabilities (all bits for every capability defined in TS 24.501 and received in NAS signalling) to the gNB [Source: 38300-he0.docx].
+        *   **Handover Procedures:** The gNB/ng-eNB sends a Handover Required message to the AMF, which includes the UE's identity [Source: 33501-k00.docx, 33501-j40.doc].
+        *   **Security Capability Verification:** 
+            *   The target gNB/ng-eNB sends the UE's 5G security capabilities (received from the source gNB/ng-eNB) to the AMF within the Path-Switch message [Source: 33501-j60.docx].
+            *   The AMF verifies if these received capabilities match the UE's 5G security capabilities stored locally [Source: 33501-gk0.docx, 33501-j60.docx].
+            *   If a mismatch occurs, the AMF sends its locally stored 5G security capabilities to the target gNB/ng-eNB via the Path-Switch Acknowledge message [Source: 33501-gk0.docx].
     Sources:
-        - 38300-he0.docx (score: 0.058)
-        - 38300-i90.docx (score: 0.058)
-        - 38300-j20.docx (score: 0.058)
+        - 38300-he0.docx (score: 4.941)
+        - 33501-k00.docx (score: 4.013)
+        - 33501-gk0.docx (score: 4.001)
 
 ----------------------------------------
 
 [21] ID: s4 | Category: Stress
     Query: Explain 5G QoS in one sentence.
-    Status: error
-    Error: HTTP 500: {"detail":"Error code: 413 - {'error': {'message': 'Request too large for model `llama-3.1-8b-instant` in organization `org_01m027q4a7eaerxaega60twcr5` service tier `on_demand` on tokens per minute (T
+    Status: success
+    Elapsed: 15.14s
+    Answer:
+        Based on the provided documents, 5G QoS involves the use of a 5G QoS Flow as the finest granularity for QoS forwarding treatment in the 5G System [Source: 23501-k10.docx, 23501-hf0.docx], utilizing parameters such as the 5G QoS Identifier (5QI), which is a scalar referencing specific forwarding behaviors or node-specific parameters [Source: 23501-j80.docx, 23501-k10.docx, 23501-hf0.docx], and the Allocation and Retention Priority (ARP), which provides information on priority levels, pre-emption capability, and vulnerability for resource management [Source: 23501-hf0.docx].
+    Sources:
+        - 23501-j80.docx (score: 4.290)
+        - 23501-k10.docx (score: 4.021)
+        - 23501-k10.docx (score: 3.908)
 
 ----------------------------------------
 
 [22] ID: s5 | Category: Stress
     Query: What are the frequency bands for NR?
     Status: success
-    Elapsed: 12.62s
+    Elapsed: 7.23s
     Answer:
-        Based on the provided context, I cannot find specific information about the frequency bands for NR. However, I can provide some related information.
-        
-        From [Source: 38300-hf0.docx], I found the following restrictions on NR frequency bands:
-        
-        - NR in unlicensed bands not allowed as primary access.
-        - NR in unlicensed bands not allowed as secondary access.
-        - NR(LEO) satellite access not allowed as primary access.
-        - NR(MEO) satellite access not allowed as primary access.
-        
-        Additionally, from [Source: 38300-j20.docx], I found that the present document provides an overview and overall description of the NG-RAN, focusing on the radio interface protocol architecture of NR connected to 5GC.
-        
-        However, the specific frequency bands for NR are not mentioned in the provided context.
+        I cannot find this information in the provided documents.
     Sources:
-        - 23501-j80.docx (score: 0.129)
-        - 23501-k20.docx (score: 0.129)
-        - 23501-k10.docx (score: 0.129)
 
 ----------------------------------------
 
 [23] ID: s6 | Category: Stress
     Query: What is the difference between 5G NSA and SA?
     Status: success
-    Elapsed: 28.86s
+    Elapsed: 7.24s
     Answer:
-        I cannot find information about the difference between 5G NSA and SA in the provided documents.
+        I cannot find this information in the provided documents.
     Sources:
-        - 33501-ib0.docx (score: 0.077)
-        - 33501-j50.docx (score: 0.077)
-        - 33501-k20.docx (score: 0.077)
 
 ----------------------------------------
 
 [24] ID: s7 | Category: Stress
     Query: What is the maximum data rate of 5G?
     Status: success
-    Elapsed: 20.71s
+    Elapsed: 6.40s
     Answer:
-        The 5G QoS characteristics are defined in TS 23.501 [3] and include:
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget;
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j20.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j30.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j10.docx]
-        Standardized or pre-configured 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j40.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j50.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j60.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j70.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j80.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j90.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j00.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j10.docx]
-        Standardized or pre-configured 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j20.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j30.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j40.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j50.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j60.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j70.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j80.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window;
-        
-        -	Maximum Data Burst Volume.
-        
-        [Source: 38300-j90.docx]
-        The 5G QoS characteristics are derived from the 5QI value and are not explicitly signalled. Signalled QoS characteristics are included as part of the QoS profile. The QoS characteristics consist for instance of (see TS 23.501 [3]):
-        
-        -	Priority level;
-        
-        -	Packet Delay Budget (including Core Network Packet Delay Budget);
-        
-        -	Packet Error Rate;
-        
-        -	Averaging window
+        I cannot find this information in the provided documents.
     Sources:
-        - 23501-k00.docx (score: 0.115)
-        - 23501-j70.docx (score: 0.115)
-        - 23501-j80.docx (score: 0.115)
 
 ----------------------------------------
 
 [25] ID: s8 | Category: Stress
     Query: How does beamforming work in 5G?
     Status: success
-    Elapsed: 49.13s
+    Elapsed: 11.79s
     Answer:
-        Based on the provided context, I will provide information about beamforming in 5G.
-        
-        Beamforming is a technique used in 5G to improve the quality of the wireless connection between the user equipment (UE) and the base station (gNB). The UE is configured to consider a subset of the detected beams, and filtering takes place at two different levels: at the physical layer to derive beam quality and then at RRC level to derive cell quality from multiple beams.
-        
-        Here is a high-level measurement model describing how beamforming works in 5G:
-        
-        - **Measurements (beam specific samples)**: internal to the physical layer (A).
-        - **Layer 1 filtering**: internal layer 1 filtering of the inputs measured at point A (implementation dependent).
-        - **Measurements (i.e. beam specific measurements)**: reported by layer 1 to layer 3 after layer 1 filtering (A1).
-        - **Beam Consolidation/Selection**: beam specific measurements are consolidated to derive cell quality (B).
-        - **Layer 3 filtering for cell quality**: filtering performed on the measurements provided at point B (C).
-        - **Evaluation of reporting criteria**: checks whether actual measurement reporting is necessary (D).
-        
-        The UE is configured to consider a subset of the detected beams, and measurement reports may contain the measurement results of the X best beams if the UE is configured to do so by the gNB.
-        
-        **Key terms related to beamforming in 5G:**
-        
-        - **Beam quality**: derived at the physical layer.
-        - **Cell quality**: derived from multiple beams at the RRC level.
-        - **Beam Consolidation/Selection**: standardised and configured by RRC signalling.
-        - **Layer 3 filters**: standardised and configured by RRC signalling.
-        
-        **References:**
-        
-        - [Source: 38300-gl0.docx]
-        - [Source: 38300-hg0.docx]
-        - [Source: 38300-hf0.docx]
-        - [Source: 38300-he0.docx]
+        I cannot find sufficient information to answer this question in the provided 3GPP documents.
     Sources:
-        - 23501-k10.docx (score: 0.083)
-        - 23501-hf0.docx (score: 0.083)
-        - 23501-ib0.docx (score: 0.083)
 
 ----------------------------------------
 
@@ -1406,136 +472,17 @@ Skipped:       1
 [27] ID: s10 | Category: Stress
     Query: What is the 3GPP release 18?
     Status: success
-    Elapsed: 24.79s
+    Elapsed: 7.08s
     Answer:
-        Release 18 is mentioned in the following documents:
+        Based on the provided documents, Release 18 is associated with the following technical specifications:
         
-        - 3GPP TS 38.300 V18.7.0 (2025-09) [Source: 38300-i70.docx]
-        - 3GPP TS 38.300 V18.8.0 (2025-12) [Source: 38300-i80.docx]
-        - 3GPP TS 33.501 V18.11.0 (2026-03) [Source: 33501-ic0.docx]
-        - 3GPP TS 33.501 V18.12.0 (2026-06) [Source: 33501-ib0.docx]
-        - 3GPP TS 23.501 V18.11.0 (2025-09) [Source: 23501-ib0.docx]
-        - 3GPP TS 23.501 V18.12.0 (2025-12) [Source: 23501-ic0.docx]
-        - 3GPP TS 38.300 V18.9.0 (2026-03) [Source: 38300-i90.docx]
-        - 3GPP TS 38.300 V18.10.0 (2026-06) [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ic0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ib0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i70.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i90.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i80.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i90.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i80.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i90.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i80.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i90.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i80.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i90.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i80.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i90.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-ia0.docx]
-        
-        Release 18 is also mentioned in the following documents as the release for the following specifications:
-        
-        - Security architecture and procedures for 5G system [Source: 33501-ib0.docx]
-        - System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ic0.docx]
-        - NR; NR and NG-RAN Overall Description; Stage 2 [Source: 38300-i
+        *   **3GPP TS 38.300** [Source: 38300-i70.docx, 38300-i80.docx, 38300-i90.docx, 38300-ia0.docx]
+        *   **3GPP TS 33.501**: Security architecture and procedures for 5G system [Source: 33501-ic0.docx, 33501-ib0.docx]
+        *   **3GPP TS 23.501**: System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ib0.docx, 23501-ic0.docx]
     Sources:
-        - 38300-i70.docx (score: 0.099)
-        - 38300-i80.docx (score: 0.097)
-        - 33501-ic0.docx (score: 0.094)
+        - 38300-i70.docx (score: 7.448)
+        - 38300-i80.docx (score: 7.427)
+        - 33501-ic0.docx (score: 7.393)
 
 ----------------------------------------
 
