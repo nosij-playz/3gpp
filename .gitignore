@@ -1,0 +1,19 @@
+# Git ignore for 3GPP RAG
+.env
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+ENV/
+env/
+
+# Backend specific
+Backend/.env
+Backend/storage/
+Backend/storage/*.index
+Backend/storage/*.pkl
+
+# OS specific
+.DS_Store
+Thumbs.db
