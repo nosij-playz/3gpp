@@ -1,21 +1,26 @@
 """
-Evidence-Controlled RAG Server – Supports Groq & Ollama
-- LLM provider configurable via .env
-- Evidence gate before generation
-- Streaming and non‑streaming endpoints
+Pure Brain + Memory RAG Server – Near-Zero Hallucination Edition
+- LLM provider configurable via .env (Groq / Ollama)
+- Evidence gate: abstains if retrieved context is weak
+- Claim verification: NLI model checks generated answer against evidence
+- Streaming and non-streaming endpoints
+- Optional Cloudflare tunnel for quick public access
 """
 
 import os
 import pickle
 import json
-import numpy as np
-import torch
 import re
-import requests
+import subprocess
+import threading
+import time
 from contextlib import asynccontextmanager
 from typing import List, Optional, Tuple, Generator, Dict, Any
 
 import faiss
+import numpy as np
+import torch
+import requests
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
@@ -23,35 +28,41 @@ from sentence_transformers import SentenceTransformer, CrossEncoder
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 from dotenv import load_dotenv
 
+# Import all config settings (make sure config.py is in the same directory)
+from config import (
+    STORAGE_DIR,
+    EMBED_MODEL_NAME,
+    HYDE_MODEL_NAME,
+    CROSS_ENCODER_NAME,
+    NLI_MODEL_NAME,
+    ENABLE_NLI_VERIFICATION,
+    LLM_PROVIDER,
+    GROQ_API_KEY,
+    GROQ_MODEL,
+    OLLAMA_BASE_URL,
+    OLLAMA_MODEL,
+    TOP_K,
+    MAX_CHUNKS,
+    CHUNK_TRUNCATE,
+    HYDE_ENABLED,
+    EVIDENCE_THRESHOLD,
+    TOPK_THRESHOLD,
+    NLI_THRESHOLD,
+    ENABLE_TUNNEL,
+    DEVICE
+)
+
 load_dotenv()
-
-# ---------- CONFIG ----------
-STORAGE_DIR = os.environ.get("STORAGE_DIR", "./storage")
-EMBED_MODEL_NAME = os.environ.get("EMBED_MODEL_NAME", "all-MiniLM-L6-v2")
-HYDE_MODEL_NAME = os.environ.get("HYDE_MODEL_NAME", "google/flan-t5-small")
-CROSS_ENCODER_NAME = os.environ.get("CROSS_ENCODER_NAME", "cross-encoder/ms-marco-MiniLM-L-6-v2")
-
-# LLM Provider
-LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "groq").lower()
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY", "")
-GROQ_MODEL = os.environ.get("GROQ_MODEL", "llama-3.1-70b-versatile")
-OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.environ.get("OLLAMA_MODEL", "llama3.1:8b")
-
-TOP_K = int(os.environ.get("TOP_K", 35))
-MAX_CHUNKS = int(os.environ.get("MAX_CHUNKS", 8))
-EVIDENCE_THRESHOLD = float(os.environ.get("EVIDENCE_THRESHOLD", 0.5))
-TOPK_THRESHOLD = float(os.environ.get("TOPK_THRESHOLD", 0.3))
-CHUNK_TRUNCATE = int(os.environ.get("CHUNK_TRUNCATE", 1500))
-HYDE_ENABLED = os.environ.get("HYDE_ENABLED", "true").lower() == "true"
-
-DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 print(f"🧠 LLM Provider: {LLM_PROVIDER}")
 if LLM_PROVIDER == "groq":
     print(f"   Model: {GROQ_MODEL}")
 else:
     print(f"   Model: {OLLAMA_MODEL} (via {OLLAMA_BASE_URL})")
+if ENABLE_NLI_VERIFICATION:
+    print(f"🔍 NLI Verification: enabled (model: {NLI_MODEL_NAME})")
+else:
+    print("🔍 NLI Verification: disabled")
 
 # ---------- GLOBAL VARIABLES ----------
 index = None
@@ -61,9 +72,9 @@ embed_model = None
 hyde_tokenizer = None
 hyde_model = None
 cross_encoder = None
-
-# LLM client (initialized lazily)
+nli_model = None          # NEW: for claim verification
 llm_client = None
+TUNNEL_URL = None
 
 # ---------- QUERY EXPANSION ----------
 def expand_query(query: str) -> str:
@@ -99,10 +110,35 @@ def expand_query(query: str) -> str:
             expanded.append(w)
     return " ".join(expanded)
 
+# ---------- CLOUDFLARE TUNNEL ----------
+def start_cloudflare_tunnel():
+    global TUNNEL_URL
+    if not ENABLE_TUNNEL:
+        return
+    try:
+        cmd = ["cloudflared", "tunnel", "--url", "http://localhost:8000"]
+        process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                   text=True, bufsize=1)
+        print("🔄 Starting Cloudflare tunnel...")
+        for line in process.stdout:
+            line = line.strip()
+            if line:
+                print(f"[cloudflared] {line}")
+            match = re.search(r'https://[a-zA-Z0-9-]+\.trycloudflare\.com', line)
+            if match:
+                TUNNEL_URL = match.group(0)
+                print(f"🔗 Tunnel URL: {TUNNEL_URL}")
+                break
+        process.wait()
+    except FileNotFoundError:
+        print("⚠️ cloudflared not found. Please install it: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation")
+    except Exception as e:
+        print(f"⚠️ Error starting Cloudflare tunnel: {e}")
+
 # ---------- LIFECYCLE ----------
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global index, nodes, texts, embed_model, hyde_tokenizer, hyde_model, cross_encoder, llm_client
+    global index, nodes, texts, embed_model, hyde_tokenizer, hyde_model, cross_encoder, nli_model, llm_client
 
     print("🔧 Loading memory...")
     index = faiss.read_index(os.path.join(STORAGE_DIR, "faiss.index"))
@@ -119,7 +155,10 @@ async def lifespan(app: FastAPI):
     hyde_model.eval()
     cross_encoder = CrossEncoder(CROSS_ENCODER_NAME, device=DEVICE)
 
-    # Initialize LLM client based on provider
+    if ENABLE_NLI_VERIFICATION:
+        print("🔧 Loading NLI verification model...")
+        nli_model = CrossEncoder(NLI_MODEL_NAME, device=DEVICE)
+
     print("🔧 Initializing LLM client...")
     if LLM_PROVIDER == "groq":
         if not GROQ_API_KEY:
@@ -127,9 +166,7 @@ async def lifespan(app: FastAPI):
         from groq import Groq
         llm_client = Groq(api_key=GROQ_API_KEY)
     elif LLM_PROVIDER == "ollama":
-        # No client needed – we'll use requests directly
         llm_client = None
-        # Test connectivity
         try:
             resp = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=2)
             if resp.status_code != 200:
@@ -139,10 +176,15 @@ async def lifespan(app: FastAPI):
     else:
         raise ValueError(f"Unsupported LLM_PROVIDER: {LLM_PROVIDER}")
 
+    if ENABLE_TUNNEL:
+        thread = threading.Thread(target=start_cloudflare_tunnel, daemon=True)
+        thread.start()
+        time.sleep(1)
+
     print("🚀 Server ready.")
     yield
 
-app = FastAPI(title="3GPP RAG (Evidence-Controlled)", lifespan=lifespan)
+app = FastAPI(title="3GPP RAG (Near-Zero Hallucination)", lifespan=lifespan)
 
 # ---------- PYDANTIC MODELS ----------
 class QueryRequest(BaseModel):
@@ -159,11 +201,13 @@ class QueryResponse(BaseModel):
     answer: str
     sources: List[Source]
     abstained: bool = Field(default=False, description="Whether the system refused to answer")
-    evidence_score: float = Field(default=0.0, description="Score based on evidence quality (0-1)")
-    retrieval_count: int = Field(default=0, description="Number of chunks retrieved")
+    evidence_score: float = Field(default=0.0, description="Average cross-encoder score of top contexts (0-1)")
+    verification_score: Optional[float] = Field(default=None, description="Average NLI entailment score of generated claims (0-1)")
+    retrieval_count: int = Field(default=0, description="Number of chunks retrieved after reranking")
 
 # ---------- RETRIEVAL FUNCTIONS ----------
 def generate_hypothesis(query: str) -> str:
+    """Generate a hypothetical answer for HyDE (optional)."""
     prompt = f"Write a detailed answer to this question: {query}"
     inputs = hyde_tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
     inputs = {k: v.to('cpu') for k, v in inputs.items()}
@@ -171,7 +215,12 @@ def generate_hypothesis(query: str) -> str:
         outputs = hyde_model.generate(**inputs, max_new_tokens=150)
     return hyde_tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-def retrieve_evidence(query: str) -> Tuple[List[dict], float, float]:
+def retrieve_evidence(query: str) -> Tuple[List[dict], float]:
+    """
+    Retrieves evidence chunks and returns:
+      - contexts: list of dicts with text, metadata, score, file_name
+      - avg_top_score: average cross-encoder score of top 3 contexts (evidence strength)
+    """
     expanded_query = expand_query(query)
     if HYDE_ENABLED:
         hyde_doc = generate_hypothesis(expanded_query)
@@ -181,12 +230,14 @@ def retrieve_evidence(query: str) -> Tuple[List[dict], float, float]:
 
     q_emb = embed_model.encode([combined], convert_to_tensor=True)
     q_emb = q_emb.cpu().numpy().astype('float32')
-    distances, indices = index.search(q_emb, 50)
+    # Retrieve more candidates than needed for reranking
+    distances, indices = index.search(q_emb, TOP_K * 3)
 
     candidates = [texts[i] for i in indices[0]]
     pairs = [[query, doc] for doc in candidates]
     scores = cross_encoder.predict(pairs)
 
+    # Sort by score descending
     sorted_idx = np.argsort(scores)[::-1]
     top_indices = [indices[0][i] for i in sorted_idx]
     top_scores = [scores[i] for i in sorted_idx]
@@ -205,35 +256,17 @@ def retrieve_evidence(query: str) -> Tuple[List[dict], float, float]:
             "score": float(top_scores[i]),
             "file_name": file_name
         })
+        if len(contexts) >= MAX_CHUNKS:
+            break
 
     if contexts:
-        top_score = contexts[0]["score"]
+        # Use average of top 3 scores as evidence quality
         top_3 = contexts[:3]
         avg_top = sum(c["score"] for c in top_3) / len(top_3) if top_3 else 0.0
     else:
-        top_score = 0.0
         avg_top = 0.0
 
-    return contexts, top_score, avg_top
-
-def evidence_is_sufficient(contexts: List[dict], top_score: float, avg_top: float) -> Tuple[bool, float]:
-    if not contexts:
-        return False, 0.0
-    if top_score <= 0:
-        return False, 0.0
-    if top_score < EVIDENCE_THRESHOLD:
-        return False, 0.0
-    if avg_top < TOPK_THRESHOLD:
-        return False, 0.0
-    good_chunks = sum(1 for c in contexts if c["score"] > EVIDENCE_THRESHOLD / 2)
-    if good_chunks < 2:
-        return False, 0.0
-
-    normalized_top = min(1.0, top_score / 8.0)
-    normalized_avg = min(1.0, avg_top / 6.0)
-    coverage = min(1.0, good_chunks / 4.0)
-    evidence_score = normalized_top * 0.5 + normalized_avg * 0.3 + coverage * 0.2
-    return True, evidence_score
+    return contexts, avg_top
 
 # ---------- PROMPT BUILDING ----------
 def build_prompt(query: str, contexts: List[dict]) -> str:
@@ -242,6 +275,7 @@ def build_prompt(query: str, contexts: List[dict]) -> str:
     for i, c in enumerate(chunks):
         text = c["text"]
         if len(text) > CHUNK_TRUNCATE:
+            # Truncate at sentence boundary if possible
             cut = text[:CHUNK_TRUNCATE].rfind('. ')
             if cut > CHUNK_TRUNCATE // 2:
                 text = text[:cut + 1] + "..."
@@ -264,15 +298,19 @@ def build_prompt(query: str, contexts: List[dict]) -> str:
     context_text = "\n\n---\n\n".join(context_parts)
 
     system = (
-        "You are a 3GPP standards expert with access to a knowledge base.\n\n"
-        "You must answer the user's question using ONLY the provided context.\n\n"
-        "RULES:\n"
-        "1. If the context contains the answer, provide a clear, cited answer.\n"
-        "2. If the context does NOT contain the answer, say: 'I cannot find this information in the provided documents.'\n"
-        "3. If the question is completely unrelated to 3GPP/telecom, say: 'I can only answer questions about 3GPP standards.'\n"
-        "4. For every factual claim, provide a citation in the format [Source: ...].\n"
-        "5. Use tables or bullet lists when appropriate.\n"
-        "6. Do not add information from outside the context.\n\n"
+        "You are a 3GPP standards expert. You MUST answer ONLY using the provided context.\n"
+        "You are FORBIDDEN from using any external knowledge, even if you think you know the answer.\n\n"
+        "STRICT RULES:\n"
+        "1. If the user greets you (e.g., 'hi', 'hello'), respond warmly and explain your purpose.\n"
+        "2. If the user asks about your capabilities, introduce yourself as a 3GPP chatbot.\n"
+        "3. If the answer to the technical question is fully contained in the provided context, provide a clear, cited answer.\n"
+        "4. If the context does NOT contain enough information to answer, respond EXACTLY: "
+        "'I cannot find this information in the provided documents.'\n"
+        "5. If the question is completely unrelated to 3GPP/telecom, respond: "
+        "'I can only answer questions about 3GPP standards.'\n"
+        "6. Every factual claim MUST include a citation like [Source: ...].\n"
+        "7. Do NOT add any information that is not explicitly stated in the context.\n"
+        "8. If the context is ambiguous, say so rather than guessing.\n\n"
         "--- PROVIDED CONTEXT ---\n"
         f"{context_text}\n"
         "--- END OF CONTEXT ---\n\n"
@@ -281,9 +319,8 @@ def build_prompt(query: str, contexts: List[dict]) -> str:
     )
     return system
 
-# ---------- LLM GENERATION (Unified) ----------
+# ---------- LLM GENERATION ----------
 def generate_llm_response(prompt: str, stream: bool = False):
-    """Generate response from either Groq or Ollama."""
     if LLM_PROVIDER == "groq":
         return _generate_groq(prompt, stream)
     elif LLM_PROVIDER == "ollama":
@@ -292,7 +329,6 @@ def generate_llm_response(prompt: str, stream: bool = False):
         raise ValueError(f"Unknown provider: {LLM_PROVIDER}")
 
 def _generate_groq(prompt: str, stream: bool):
-    # Groq expects messages list
     messages = [{"role": "user", "content": prompt}]
     completion = llm_client.chat.completions.create(
         model=GROQ_MODEL,
@@ -303,7 +339,6 @@ def _generate_groq(prompt: str, stream: bool):
         stream=stream,
     )
     if stream:
-        # Return generator that yields tokens
         def generator():
             for chunk in completion:
                 if chunk.choices[0].delta.content:
@@ -339,10 +374,59 @@ def _generate_ollama(prompt: str, stream: bool):
         resp.raise_for_status()
         return resp.json().get("response", "")
 
+# ---------- CLAIM VERIFICATION (NLI) ----------
+def verify_claims(answer: str, contexts: List[dict], threshold: float) -> Tuple[bool, float, List[str]]:
+    """
+    Splits the answer into sentences and checks each against the provided contexts using NLI.
+    Returns:
+      - is_grounded: True if average entailment score >= threshold
+      - avg_entailment: average entailment probability over all sentences
+      - suspicious_sentences: list of sentences with entailment < threshold
+    """
+    if not ENABLE_NLI_VERIFICATION or nli_model is None:
+        # Verification disabled – trust the LLM (not recommended for zero hallucination)
+        return True, 1.0, []
+
+    sentences = re.split(r'(?<=[.!?]) +', answer.strip())
+    if not sentences:
+        return False, 0.0, []
+
+    context_texts = [c["text"] for c in contexts[:MAX_CHUNKS]]
+
+    entail_scores = []
+    suspicious = []
+    for sent in sentences:
+        if not sent.strip():
+            continue
+        max_entail = 0.0
+        for ctx_text in context_texts:
+            logits = nli_model.predict([(sent, ctx_text)])[0]
+            probs = torch.softmax(torch.tensor(logits), dim=0).numpy()
+            entail_prob = probs[1] if len(probs) == 3 else probs  # adjust if different NLI model
+            if entail_prob > max_entail:
+                max_entail = entail_prob
+        entail_scores.append(max_entail)
+        if max_entail < threshold:
+            suspicious.append(sent)
+
+    avg_entail = sum(entail_scores) / len(entail_scores) if entail_scores else 0.0
+    grounded = avg_entail >= threshold
+    return grounded, avg_entail, suspicious
+
 # ---------- API ENDPOINTS ----------
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+@app.get("/tunnel")
+async def get_tunnel():
+    if TUNNEL_URL:
+        return {"tunnel_url": TUNNEL_URL}
+    else:
+        if ENABLE_TUNNEL:
+            return {"error": "Tunnel not yet ready or failed to start."}
+        else:
+            return {"error": "Tunnel is disabled. Set ENABLE_TUNNEL=true to use it."}
 
 @app.post("/query", response_model=QueryResponse)
 async def query_endpoint(req: QueryRequest):
@@ -350,22 +434,24 @@ async def query_endpoint(req: QueryRequest):
         raise HTTPException(status_code=400, detail="Question cannot be empty.")
 
     try:
-        contexts, top_score, avg_top = retrieve_evidence(req.question)
-        sufficient, evidence_score = evidence_is_sufficient(contexts, top_score, avg_top)
+        # Step 1: Retrieve evidence
+        contexts, evidence_score = retrieve_evidence(req.question)
 
-        if not sufficient:
-            return {
-                "answer": "I cannot find sufficient information to answer this question in the provided 3GPP documents.",
-                "sources": [],
-                "abstained": True,
-                "evidence_score": evidence_score,
-                "retrieval_count": len(contexts)
-            }
+        # Step 2: Evidence gate – if weak evidence, abstain
+        if evidence_score < EVIDENCE_THRESHOLD:
+            return QueryResponse(
+                answer="I cannot answer this question reliably based on the provided documents.",
+                sources=[],
+                abstained=True,
+                evidence_score=evidence_score,
+                retrieval_count=len(contexts)
+            )
 
+        # Step 3: Build prompt and generate answer
         prompt = build_prompt(req.question, contexts)
         answer = generate_llm_response(prompt, stream=False)
 
-        # Double-check LLM refusal
+        # Step 4: Check for LLM refusal (if model ignored instructions)
         refusal_phrases = [
             "cannot find this information",
             "not in the provided documents",
@@ -374,14 +460,31 @@ async def query_endpoint(req: QueryRequest):
         ]
         llm_refused = any(p in answer.lower() for p in refusal_phrases)
         if llm_refused:
-            return {
-                "answer": answer,
-                "sources": [],
-                "abstained": True,
-                "evidence_score": evidence_score,
-                "retrieval_count": len(contexts)
-            }
+            return QueryResponse(
+                answer=answer,
+                sources=[],
+                abstained=True,
+                evidence_score=evidence_score,
+                retrieval_count=len(contexts)
+            )
 
+        # Step 5: Claim verification (if enabled)
+        verification_score = None
+        if ENABLE_NLI_VERIFICATION:
+            grounded, avg_entail, suspicious = verify_claims(answer, contexts, NLI_THRESHOLD)
+            verification_score = avg_entail
+            if not grounded:
+                # Abstain entirely to ensure near-zero hallucination
+                return QueryResponse(
+                    answer="I could not verify the generated answer against the source documents.",
+                    sources=[],
+                    abstained=True,
+                    evidence_score=evidence_score,
+                    verification_score=verification_score,
+                    retrieval_count=len(contexts)
+                )
+
+        # Step 6: Prepare sources for response
         sources = [
             Source(
                 text=c["text"][:500],
@@ -392,13 +495,14 @@ async def query_endpoint(req: QueryRequest):
             for c in contexts[:5]
         ]
 
-        return {
-            "answer": answer,
-            "sources": sources,
-            "abstained": False,
-            "evidence_score": evidence_score,
-            "retrieval_count": len(contexts)
-        }
+        return QueryResponse(
+            answer=answer,
+            sources=sources,
+            abstained=False,
+            evidence_score=evidence_score,
+            verification_score=verification_score,
+            retrieval_count=len(contexts)
+        )
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -414,18 +518,22 @@ async def query_stream(req: QueryRequest):
 
     async def event_generator():
         try:
-            contexts, top_score, avg_top = retrieve_evidence(req.question)
-            sufficient, evidence_score = evidence_is_sufficient(contexts, top_score, avg_top)
+            # Retrieve evidence
+            contexts, evidence_score = retrieve_evidence(req.question)
 
-            if not sufficient:
-                yield f"data: {json.dumps({'token': 'I cannot find sufficient information to answer this question in the provided 3GPP documents.'})}\n\n"
+            # Evidence gate
+            if evidence_score < EVIDENCE_THRESHOLD:
+                yield f"data: {json.dumps({'error': 'Insufficient evidence to answer.'})}\n\n"
                 yield "data: [DONE]\n\n"
                 return
 
             prompt = build_prompt(req.question, contexts)
-            gen = generate_llm_response(prompt, stream=True)
-            for token in gen:
+            completion = generate_llm_response(prompt, stream=True)
+
+            # Stream tokens (note: claim verification is not performed in streaming mode)
+            for token in completion:
                 yield f"data: {json.dumps({'token': token})}\n\n"
+
             yield "data: [DONE]\n\n"
         except Exception as e:
             yield f"data: {json.dumps({'error': str(e)})}\n\n"
