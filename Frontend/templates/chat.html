@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>3GPP RAG Chatbot</title>
+    <title>3GPP RAG Assistant</title>
     <style>
         /* ── Reset & Base ── */
         * {
@@ -13,25 +13,23 @@
         }
 
         :root {
-            --bg: #f5f7fa;
+            --bg: #f0f4f9;
             --surface: #ffffff;
-            --surface-secondary: #f0f2f6;
-            --primary: #0071e3;
-            /* Apple blue */
-            --primary-hover: #005bbf;
-            --primary-light: #e1f0ff;
-            --text-primary: #1d1d1f;
-            --text-secondary: #6e6e73;
-            --text-muted: #a1a1a6;
-            --border: #d2d2d7;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 16px 60px rgba(0, 0, 0, 0.12);
-            --radius-sm: 10px;
-            --radius-md: 18px;
-            --radius-lg: 26px;
+            --surface-secondary: #f2f6fc;
+            --primary: #0066cc;
+            --primary-dark: #004d99;
+            --primary-glow: rgba(0, 102, 204, 0.12);
+            --text-primary: #1a2332;
+            --text-secondary: #4a5a72;
+            --text-muted: #8a9bb0;
+            --border: #dce4ee;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.10);
+            --radius-sm: 8px;
+            --radius-md: 16px;
             --radius-full: 9999px;
-            --transition: 0.25s cubic-bezier(0.25, 0.1, 0.25, 1);
+            --transition: 0.25s ease;
         }
 
         html,
@@ -41,11 +39,8 @@
             background: var(--bg);
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            touch-action: manipulation;
         }
 
-        /* ── App Shell ── */
         .app {
             display: flex;
             flex-direction: column;
@@ -54,22 +49,26 @@
             margin: 0 auto;
             background: var(--surface);
             box-shadow: var(--shadow-lg);
-            position: relative;
             overflow: hidden;
+            border-radius: 24px;
+        }
+
+        @media (max-width: 480px) {
+            .app {
+                border-radius: 0;
+                max-width: 100%;
+            }
         }
 
         /* ── Header ── */
         .header {
-            background: var(--surface);
-            padding: 14px 20px 12px;
+            padding: 18px 20px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-shrink: 0;
+            background: linear-gradient(135deg, #ffffff 0%, #eef5ff 100%);
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.92);
             position: sticky;
             top: 0;
             z-index: 10;
@@ -79,31 +78,27 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            min-width: 0;
         }
 
         .header-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
             color: #fff;
             flex-shrink: 0;
-            box-shadow: 0 2px 10px rgba(0, 113, 227, 0.25);
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
         .header-info h1 {
-            font-size: 17px;
-            font-weight: 600;
+            font-size: 18px;
+            font-weight: 700;
             color: var(--text-primary);
             letter-spacing: -0.3px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
         .header-info .sub {
@@ -131,8 +126,8 @@
                 transform: scale(1);
             }
             50% {
-                opacity: 0.5;
-                transform: scale(0.85);
+                opacity: 0.4;
+                transform: scale(0.8);
             }
         }
 
@@ -142,21 +137,17 @@
             color: var(--text-secondary);
             width: 38px;
             height: 38px;
-            border-radius: 50%;
+            border-radius: 10px;
             font-size: 20px;
             cursor: pointer;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition);
         }
 
         .header-actions button:hover {
             background: var(--surface-secondary);
-        }
-
-        .header-actions button:active {
-            transform: scale(0.92);
         }
 
         /* ── Chat Container ── */
@@ -169,11 +160,10 @@
             gap: 12px;
             background: var(--bg);
             scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
         }
 
         .chat-container::-webkit-scrollbar {
-            width: 3px;
+            width: 4px;
         }
         .chat-container::-webkit-scrollbar-thumb {
             background: var(--border);
@@ -189,15 +179,14 @@
             font-size: 15px;
             word-wrap: break-word;
             white-space: pre-wrap;
-            position: relative;
-            animation: msg-in 0.30s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+            animation: msg-in 0.35s cubic-bezier(0.25, 0.1, 0.25, 1) both;
             box-shadow: var(--shadow-sm);
         }
 
         @keyframes msg-in {
             0% {
                 opacity: 0;
-                transform: translateY(8px) scale(0.98);
+                transform: translateY(10px) scale(0.97);
             }
             100% {
                 opacity: 1;
@@ -210,7 +199,7 @@
             background: var(--primary);
             color: #fff;
             border-bottom-right-radius: 4px;
-            box-shadow: 0 2px 12px rgba(0, 113, 227, 0.20);
+            box-shadow: 0 2px 12px var(--primary-glow);
         }
 
         .message.bot {
@@ -237,28 +226,33 @@
             color: var(--text-muted);
         }
 
-        /* Sources */
+        /* ── Sources ── */
         .message .sources {
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px solid var(--border);
             font-size: 12px;
             color: var(--text-secondary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
         }
 
         .message .sources strong {
             font-weight: 600;
             color: var(--text-primary);
+            margin-right: 4px;
         }
 
         .message .sources .tag {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             background: var(--surface-secondary);
-            padding: 2px 12px;
+            padding: 2px 10px 2px 8px;
             border-radius: var(--radius-full);
             font-size: 11px;
             color: var(--text-secondary);
-            margin: 3px 4px 3px 0;
             border: 1px solid var(--border);
             font-weight: 500;
         }
@@ -268,7 +262,7 @@
             font-weight: 400;
         }
 
-        /* Abstained badge */
+        /* ── Abstained Badge ── */
         .abstained-badge {
             display: inline-flex;
             align-items: center;
@@ -281,6 +275,17 @@
             border-radius: var(--radius-full);
             font-weight: 500;
             border: 1px solid #ffe082;
+        }
+
+        /* ── Error Message ── */
+        .message.error {
+            align-self: center;
+            background: #fff1f0;
+            color: #d32f2f;
+            border: 1px solid #ffcdd2;
+            text-align: center;
+            font-size: 14px;
+            max-width: 90%;
         }
 
         /* ── Typing Indicator ── */
@@ -331,32 +336,29 @@
         /* ── Input Area ── */
         .input-area {
             flex-shrink: 0;
-            padding: 10px 16px 14px;
+            padding: 12px 16px 16px;
             background: var(--surface);
             border-top: 1px solid var(--border);
             display: flex;
             align-items: flex-end;
             gap: 10px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.92);
         }
 
         .input-wrapper {
             flex: 1;
             display: flex;
-            align-items: flex-end;
+            align-items: center;
             background: var(--surface-secondary);
-            border-radius: var(--radius-lg);
+            border-radius: var(--radius-full);
             border: 1.5px solid transparent;
             transition: var(--transition);
-            padding: 2px 4px 2px 16px;
+            padding: 2px 4px 2px 18px;
         }
 
         .input-wrapper:focus-within {
             border-color: var(--primary);
             background: var(--surface);
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.08);
+            box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
         .input-wrapper textarea {
@@ -378,25 +380,6 @@
             color: var(--text-muted);
         }
 
-        .input-wrapper .attach-btn {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 20px;
-            padding: 8px 6px 8px 10px;
-            cursor: pointer;
-            transition: var(--transition);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .input-wrapper .attach-btn:hover {
-            color: var(--text-secondary);
-            background: rgba(0, 0, 0, 0.04);
-        }
-
         .send-btn {
             width: 46px;
             height: 46px;
@@ -411,18 +394,30 @@
             justify-content: center;
             transition: var(--transition);
             flex-shrink: 0;
-            box-shadow: 0 4px 14px rgba(0, 113, 227, 0.25);
+            box-shadow: 0 4px 14px var(--primary-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .send-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
         }
 
         .send-btn:hover {
-            background: var(--primary-hover);
-            transform: scale(1.02);
+            background: var(--primary-dark);
+            transform: scale(1.04);
         }
-
+        .send-btn:hover::after {
+            opacity: 1;
+        }
         .send-btn:active {
             transform: scale(0.92);
         }
-
         .send-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -444,9 +439,6 @@
             justify-content: center;
             gap: 8px;
             min-height: 34px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255, 255, 255, 0.92);
         }
 
         .status-bar .status-dot {
@@ -455,6 +447,7 @@
             height: 5px;
             border-radius: 50%;
             background: var(--text-muted);
+            transition: var(--transition);
         }
 
         .status-bar .status-dot.active {
@@ -473,19 +466,19 @@
         /* ── Welcome ── */
         .welcome {
             text-align: center;
-            padding: 30px 16px 20px;
+            padding: 40px 16px 30px;
             color: var(--text-secondary);
         }
 
         .welcome .emoji {
-            font-size: 48px;
+            font-size: 52px;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .welcome h3 {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 22px;
+            font-weight: 700;
             color: var(--text-primary);
             margin-bottom: 4px;
         }
@@ -497,14 +490,14 @@
             margin: 0 auto;
         }
 
-        /* ── Settings Overlay ── */
+        /* ── Settings Modal ── */
         .settings-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.35);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
             z-index: 999;
@@ -598,7 +591,7 @@
         .settings-modal input:focus {
             border-color: var(--primary);
             background: var(--surface);
-            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.08);
+            box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
         .settings-modal .actions {
@@ -622,7 +615,6 @@
             background: var(--surface-secondary);
             color: var(--text-secondary);
         }
-
         .settings-modal .actions .cancel:hover {
             background: var(--border);
         }
@@ -631,77 +623,11 @@
             background: var(--primary);
             color: #fff;
         }
-
         .settings-modal .actions .save:hover {
-            background: var(--primary-hover);
+            background: var(--primary-dark);
         }
-
         .settings-modal .actions button:active {
             transform: scale(0.96);
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 480px) {
-            .app {
-                max-width: 100%;
-                border-radius: 0;
-                height: 100dvh;
-            }
-
-            .header {
-                padding: 12px 16px 10px;
-            }
-
-            .header-info h1 {
-                font-size: 16px;
-            }
-
-            .chat-container {
-                padding: 12px 12px 6px;
-            }
-
-            .message {
-                font-size: 14px;
-                padding: 10px 14px;
-                max-width: 92%;
-            }
-
-            .input-area {
-                padding: 8px 12px 12px;
-            }
-
-            .input-wrapper {
-                padding-left: 12px;
-            }
-
-            .input-wrapper textarea {
-                font-size: 15px;
-                padding: 8px 0;
-            }
-
-            .settings-modal {
-                padding: 24px 20px 20px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .header-info .sub {
-                font-size: 10px;
-            }
-            .header-icon {
-                width: 30px;
-                height: 30px;
-                font-size: 15px;
-            }
-            .message {
-                font-size: 13px;
-                padding: 8px 12px;
-            }
-            .send-btn {
-                width: 40px;
-                height: 40px;
-                font-size: 17px;
-            }
         }
 
         /* ── Dark Mode ── */
@@ -715,16 +641,16 @@
                 --text-muted: #6e6e73;
                 --border: #3a3a3c;
                 --primary: #0a84ff;
-                --primary-hover: #0071e3;
-                --primary-light: #1a2a4a;
-                --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-                --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.5);
-                --shadow-lg: 0 16px 60px rgba(0, 0, 0, 0.6);
+                --primary-dark: #0071e3;
+                --primary-glow: rgba(10, 132, 255, 0.2);
             }
 
             .header {
-                background: rgba(28, 28, 30, 0.92);
+                background: linear-gradient(135deg, #1c1c1e 0%, #1a1a2e 100%);
                 border-color: var(--border);
+            }
+            .header-info h1 {
+                color: #fff;
             }
 
             .message.bot {
@@ -732,43 +658,38 @@
                 border-color: var(--border);
             }
 
-            .input-area {
-                background: rgba(28, 28, 30, 0.92);
-                border-color: var(--border);
+            .message.error {
+                background: #2d1a1a;
+                color: #ff6b6b;
+                border-color: #4a2a2a;
             }
 
+            .input-area {
+                background: var(--surface);
+                border-color: var(--border);
+            }
             .input-wrapper {
                 background: var(--surface-secondary);
             }
-
             .input-wrapper:focus-within {
                 background: var(--surface);
-            }
-
-            .status-bar {
-                background: rgba(28, 28, 30, 0.92);
-                border-color: var(--border);
             }
 
             .settings-modal {
                 background: var(--surface);
             }
-
             .settings-modal input {
                 background: var(--surface-secondary);
                 color: var(--text-primary);
                 border-color: var(--border);
             }
-
             .settings-modal input:focus {
                 background: var(--surface);
             }
-
             .settings-modal .actions .cancel {
                 background: var(--surface-secondary);
                 color: var(--text-secondary);
             }
-
             .settings-modal .actions .cancel:hover {
                 background: var(--border);
             }
@@ -790,10 +711,7 @@
             }
 
             .welcome h3 {
-                color: var(--text-primary);
-            }
-            .welcome p {
-                color: var(--text-muted);
+                color: #fff;
             }
         }
     </style>
@@ -821,16 +739,14 @@
 
         <!-- Chat -->
         <div class="chat-container" id="chatContainer">
-            <!-- Welcome -->
             <div class="welcome">
                 <span class="emoji">👋</span>
                 <h3>Hello, I'm your 3GPP assistant</h3>
                 <p>Ask me about 5G, NR, QoS, security, or any specification.</p>
             </div>
-            <!-- Messages appended here -->
         </div>
 
-        <!-- Typing indicator -->
+        <!-- Typing -->
         <div class="typing-indicator" id="typingIndicator" style="display:none; margin: 0 16px 4px; align-self: flex-start;">
             <span></span><span></span><span></span>
         </div>
@@ -839,7 +755,6 @@
         <div class="input-area">
             <div class="input-wrapper">
                 <textarea id="questionInput" rows="1" placeholder="Ask about 3GPP…" autofocus></textarea>
-                <button class="attach-btn" aria-label="Attach" title="Attach file">📎</button>
             </div>
             <button class="send-btn" id="sendBtn" aria-label="Send">➤</button>
         </div>
@@ -851,7 +766,7 @@
         </div>
     </div>
 
-    <!-- Settings Overlay -->
+    <!-- Settings -->
     <div class="settings-overlay" id="settingsOverlay" role="dialog" aria-modal="true">
         <div class="settings-modal">
             <div class="modal-icon">⚙️</div>
@@ -873,7 +788,6 @@
         (function() {
             'use strict';
 
-            // ── DOM refs ──
             const chatContainer = document.getElementById('chatContainer');
             const questionInput = document.getElementById('questionInput');
             const sendBtn = document.getElementById('sendBtn');
@@ -889,7 +803,6 @@
             let currentBackendUrl = '{{ backend_url }}';
             let isSending = false;
 
-            // ── helpers ──
             function setStatus(text, type) {
                 statusText.textContent = text;
                 statusDot.className = 'status-dot';
@@ -909,14 +822,12 @@
                 });
             }
 
-            // ── add message ──
-            function addMessage(text, sender, sources, abstained) {
-                // remove welcome if present
+            function addMessage(text, sender, sources, abstained, isError = false) {
                 const welcome = chatContainer.querySelector('.welcome');
                 if (welcome) welcome.remove();
 
                 const msgDiv = document.createElement('div');
-                msgDiv.className = `message ${sender}`;
+                msgDiv.className = `message ${sender}${isError ? ' error' : ''}`;
 
                 const textNode = document.createElement('div');
                 textNode.textContent = text;
@@ -927,7 +838,7 @@
                 timeSpan.textContent = getTime();
                 msgDiv.appendChild(timeSpan);
 
-                if (sources && sources.length > 0) {
+                if (!isError && sources && sources.length > 0) {
                     const srcDiv = document.createElement('div');
                     srcDiv.className = 'sources';
                     srcDiv.innerHTML = '<strong>Sources</strong> ';
@@ -936,16 +847,16 @@
                         const score = (s.score || 0).toFixed(3);
                         const tag = document.createElement('span');
                         tag.className = 'tag';
-                        tag.textContent = `📄 ${name}  ·  ${score}`;
+                        tag.innerHTML = `📄 ${name} <span class="score">· ${score}</span>`;
                         srcDiv.appendChild(tag);
                     });
                     msgDiv.appendChild(srcDiv);
                 }
 
-                if (abstained) {
+                if (!isError && abstained) {
                     const badge = document.createElement('div');
                     badge.className = 'abstained-badge';
-                    badge.textContent = '⚠️  Abstained — insufficient evidence';
+                    badge.textContent = '⚠️ Abstained — insufficient evidence';
                     msgDiv.appendChild(badge);
                 }
 
@@ -962,7 +873,6 @@
                 typingIndicator.style.display = 'none';
             }
 
-            // ── send message ──
             async function sendMessage() {
                 const question = questionInput.value.trim();
                 if (!question || isSending) return;
@@ -998,7 +908,7 @@
                     );
                 } catch (err) {
                     hideTyping();
-                    addMessage(`❌ Error: ${err.message}`, 'bot');
+                    addMessage(`❌ ${err.message}`, 'bot', null, false, true);
                     setStatus(`Error: ${err.message}`, 'error');
                 } finally {
                     isSending = false;
@@ -1012,7 +922,6 @@
                 questionInput.style.height = Math.min(questionInput.scrollHeight, 120) + 'px';
             }
 
-            // ── settings ──
             function openSettings() {
                 backendUrlInput.value = currentBackendUrl;
                 settingsOverlay.classList.add('active');
@@ -1048,7 +957,7 @@
                 }
             }
 
-            // ── event listeners ──
+            // Events
             sendBtn.addEventListener('click', sendMessage);
 
             questionInput.addEventListener('keydown', (e) => {
@@ -1075,9 +984,6 @@
             });
 
             questionInput.focus();
-
-            // Expose for debugging
-            window.__chat = { addMessage, setStatus };
         })();
     </script>
 

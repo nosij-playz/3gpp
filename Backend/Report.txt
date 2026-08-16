@@ -1,6 +1,6 @@
 ================================================================================
 3GPP RAG API Test Results
-Generated: 2026-08-15 19:19:03
+Generated: 2026-08-16 14:35:54
 ================================================================================
 
 Total queries: 27
@@ -13,153 +13,158 @@ Skipped:       1
 [1] ID: t1 | Category: Technical
     Query: What is the role of the AMF in 5G?
     Status: success
-    Elapsed: 13.66s
+    Elapsed: 59.47s
     Answer:
-        Based on the provided documents, the Access and Mobility Management function (AMF) includes the following roles and functionalities:
+        The Access and Mobility Management function (AMF) includes the following functionality, some or all of which may be supported in a single instance of an AMF [Source: 23501-j60.docx, 23501-k00.docx]:
         
-        **General Functionalities**
-        Some or all of these functionalities may be supported in a single AMF instance [Source: 23501-j50.docx, 23501-k10.docx]:
-        *   **Interface & Protocol Termination:**
-            *   Termination of RAN CP interface (N2) [Source: 23501-j50.docx, 23501-hf0.docx, 23501-k10.docx].
-            *   Termination of NAS (N1), including NAS ciphering and integrity protection [Source: 23501-j50.docx, 23501-k10.docx].
-        *   **Management Functions:**
-            *   Registration, Connection, Reachability, and Mobility management [Source: 23501-j50.docx, 23501-k10.docx].
-            *   Location Services management for regulatory services [Source: 23501-k10.docx].
-            *   UE mobility event notification [Source: 23501-k10.docx].
-        *   **Security & Authorization:**
-            *   Access Authentication and Access Authorization [Source: 23501-k10.docx].
-            *   Security Anchor Functionality (SEAF) as specified in TS 33.501 [Source: 23501-k10.docx].
-        *   **Messaging & Transport:**
-            *   Providing transport for SM messages between UE and SMF, and acting as a transparent proxy for routing them [Source: 23501-k10.docx].
-            *   Providing transport for SMS messages between UE and SMSF [Source: 23501-k10.docx].
-            *   Providing transport for Location Services messages between UE and LMF, as well as between RAN and LMF [Source: 23501-k10.docx].
-        *   **Specialized Support:**
-            *   Lawful intercept (for AMF events and interface to LI System) [Source: 23501-k10.docx].
-            *   EPS Bearer ID allocation for interworking with EPS [Source: 23501-k10.docx].
-            *   S-NSSAIs per TA mapping notification [Source: 23501-k10.docx].
-            *   Support for Control Plane and User Plane CIoT 5GS Optimisation [Source: 23501-k10.docx].
-            *   Support for restriction of use of Enhanced Coverage [Source: 23501-k10.docx].
-            *   Provisioning of external parameters (e.g., Network Configuration or Expected UE Behaviour parameters) [Source: 23501-k10.docx].
-        
-        **Interaction with 5G-AN**
-        *   **TNL Associations:** The AMF provides the 5G-AN node with weight factors for each TNL association, can request the 5G-AN to add or remove these associations, and indicates which associations are used for UE-associated versus non-UE associated signalling [Source: 23501-j70.docx].
-        *   **AMF Selection:** An AMF supports selection functionality to select an AMF for relocation or if the initially selected AMF was inappropriate (e.g., due to a change of Allowed NSSAI) [Source: 23501-j50.docx].
+        *   Termination of RAN CP interface (N2) [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Termination of NAS (N1), NAS ciphering and integrity protection [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Registration management [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Connection management [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Reachability management [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Mobility Management [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Lawful intercept (for AMF events and interface to LI System) [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Provide transport for SM messages between UE and SMF [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Transparent proxy for routing SM messages [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Access Authentication [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Access Authorization [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Provide transport for SMS messages between UE and SMSF [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Security Anchor Functionality (SEAF) as specified in TS 33.501 [29] [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Location Services management for regulatory services [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Provide transport for Location Services messages between UE and LMF as well as between RAN and LMF [Source: 23501-j60.docx, 23501-k00.docx]
+        *   EPS Bearer ID allocation for interworking with EPS [Source: 23501-j60.docx, 23501-k00.docx]
+        *   UE mobility event notification [Source: 23501-j60.docx, 23501-k00.docx]
+        *   S-NSSAIs per TA mapping notification [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Support for Control Plane CIoT 5GS Optimisation [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Support for User Plane CIoT 5GS Optimisation [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Support for restriction of use of Enhanced Coverage [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Provisioning of external parameters (Expected UE Behaviour parameters or Network Configuration parameters) [Source: 23501-j60.docx, 23501-k00.docx]
+        *   Support for Network Slice-Specific Authentication and Authorization [Source: 23501-j60.docx, 23501-k00.docx]
     Sources:
-        - 23501-j70.docx (score: 5.948)
-        - 23501-j50.docx (score: 5.109)
-        - 23501-j50.docx (score: 4.113)
+        - 23501-j60.docx (score: 5.948)
+        - 23501-ib0.docx (score: 5.686)
+        - 23501-k20.docx (score: 5.628)
 
 ----------------------------------------
 
 [2] ID: t2 | Category: Technical
     Query: Explain the 5G QoS flow mapping.
     Status: success
-    Elapsed: 7.93s
+    Elapsed: 58.46s
     Answer:
-        At the NAS level, the mapping of a QoS flow is characterized as follows:
+        Based on the provided documents, 5G QoS flow mapping is described as follows:
         
-        *   **Uplink Mapping:** QoS rules provided by the 5GC to the UE dictate the mapping between uplink User Plane traffic and QoS flows [Source: 38300-j20.docx, 38300-j00.docx].
-        *   **Radio Interface Treatment:** The NG-RAN uses a QoS profile provided by the 5GC to determine the treatment on the radio interface [Source: 38300-j20.docx, 38300-j00.docx].
+        *   **General Architecture:** There is a 2-step mapping process where IP-flows are mapped to QoS flows (at the NAS level), and then QoS flows are mapped to DRBs (at the Access Stratum level) [Source: 38300-fm0.docx].
+        *   **NAS Level Mapping:** At the NAS level, QoS rules provided by the 5GC to the UE dictate the mapping between uplink User Plane traffic and QoS flows [Source: 38300-i70.docx, 38300-j00.docx, 38300-fm0.docx].
+        *   **Identification and Treatment:** A QoS Flow ID (QFI) is used to identify a QoS Flow in the 5G System [Source: 23501-ib0.docx, 23501-hf0.docx]. User Plane traffic within a PDU Session that has the same QFI receives the same traffic forwarding treatment, such as scheduling and admission thresholds [Source: 23501-ib0.docx, 23501-hf0.docx]. All traffic mapped to the same 5G QoS Flow receives the same forwarding treatment, including RLC configuration, rate shaping policy, queue management policy, and scheduling policy [Source: 23501-j60.docx, 23501-k10.docx]. Separate 5G QoS Flows are required to provide different QoS forwarding treatment [Source: 23501-j60.docx, 23501-k10.docx, 23501-j50.docx].
     Sources:
         - 23501-j60.docx (score: 7.173)
-        - 23501-k10.docx (score: 6.768)
-        - 23501-j50.docx (score: 6.738)
+        - 23501-ib0.docx (score: 6.881)
+        - 23501-hf0.docx (score: 6.795)
 
 ----------------------------------------
 
 [3] ID: t3 | Category: Technical
     Query: What are the main functions of the gNB?
     Status: success
-    Elapsed: 17.91s
+    Elapsed: 47.48s
     Answer:
-        Based on the provided documents, the main functions and characteristics of the gNB are as follows:
+        Based on the provided documents, the gNB is a node that provides NR user plane and control plane protocol terminations towards the UE and is connected via the NG interface to the 5GC [Source: 38300-j30.docx].
         
-        *   **General Definition:** The gNB is the node that provides NR control plane and user plane protocol terminations towards the UE and is connected to the 5GC via the NG interface [Source: 38300-j30.docx, 38300-fm0.docx].
-        *   **Radio Resource Management:** The gNB hosts functions for:
-            *   Radio Bearer Control [Source: 38300-he0.docx]
-            *   Radio Admission Control [Source: 38300-he0.docx]
-            *   Connection Mobility Control [Source: 38300-he0.docx]
-            *   Scheduling (dynamic allocation of resources to UEs in downlink, uplink, and sidelink) [Source: 38300-he0.docx]
-        *   **Data Processing:** The gNB performs:
-            *   IP and Ethernet header compression [Source: 38300-he0.docx]
-            *   Uplink data decompression [Source: 38300-he0.docx]
-            *   Encryption and integrity protection of data [Source: 38300-he0.docx]
-        *   **Network and Service Functions:**
-            *   **NAS Node Selection:** It implements the NAS Node Selection Function as specified in TS 38.410 [Source: 38300-j10.docx, 38300-j00.docx].
-            *   **Service Area Information:** It provides intended service area information to UEs in relevant cells based on information received from the AMF [Source: 38300-j10.docx, 38300-j00.docx].
-            *   **A-IoT Support:** It allocates and co-ordinates the usage of A-IoT radio resources and handles Inventory Request messages from the A-IoT CN node by replying with an Inventory Response or Inventory Failure message [Source: 38300-j30.docx].
+        The gNB (along with the ng-eNB) hosts the following functions [Source: 38300-he0.docx, 38300-gm0.docx, 38300-j00.docx, 38300-j10.docx, 38300-j30.docx]:
+        
+        *   **Radio Resource Management:** Includes Radio Bearer Control, Radio Admission Control, Connection Mobility Control, and dynamic allocation of resources to UEs in uplink, downlink, and sidelink (scheduling).
+        *   **Data Processing:** IP and Ethernet header compression, uplink data decompression, encryption, and integrity protection of data.
+        *   **AMF Interaction:** Selection of an AMF at UE attachment when no routing to an AMF can be determined from information provided by the UE, and routing of Control Plane information towards the AMF.
+        *   **User Plane Handling:** Routing of User Plane data towards UPF(s).
+        *   **Connection and Messaging:** Connection setup and release, as well as the scheduling and transmission of paging messages and system broadcast information (originated from OAM or the AMF).
+        *   **Mobility and Scheduling:** Measurement and measurement reporting configuration for mobility and scheduling.
+        *   **Other Functions:** Transport level packet marking in the uplink, Session Management, Support of Network Slicing, and QoS Flow management and mapping to data radi...
+        
+        Additionally, the gNB performs the following specific tasks:
+        *   Implements the NAS Node Selection Function specified in TS 38.410 [Source: 38300-j10.docx, 38300-j00.docx].
+        *   Provides intended service area information to UEs in relevant cell(s) based on information received from the AMF [Source: 38300-j00.docx].
+        *   Allocates and co-ordinates the usage of A-IoT radio resources and handles Inventory procedure requests from the A-IoT CN node [Source: 38300-j30.docx].
+        *   Provides measurement configurations to the UE, transmits TRS or PRS to the UE, performs Rx-Tx time difference measurements, and performs PDC based on those measurements [Source: 38300-hg0.docx].
     Sources:
         - 38300-he0.docx (score: 7.142)
-        - 38300-j10.docx (score: 5.250)
-        - 38300-hg0.docx (score: 4.991)
+        - 38300-gm0.docx (score: 6.309)
+        - 38300-j00.docx (score: 6.271)
 
 ----------------------------------------
 
 [4] ID: t4 | Category: Technical
     Query: What is the N2 interface?
     Status: success
-    Elapsed: 7.48s
+    Elapsed: 33.44s
     Answer:
         Based on the provided documents, the N2 interface is described as follows:
         
-        *   **General Function and Mapping:** N2 maps to NG-C as defined in TS 38.413 [Source: 23501-k20.docx]. It is used for the termination of the control plane to the 5G Core Network [Source: 23501-k00.docx].
-        *   **Procedures:** Procedures defined over N2 include those related to N2 Interface Management that are not related to an individual UE, such as the Reset or Configuration of the N2 interface [Source: 23501-k20.docx].
-        *   **Protocol Stacks and Termination:** 
-            *   In specific configurations, the N2 interface terminates at the UE-AMF and MWAB-gNB, utilizing SCTP/IP layer protocols and NGAP between them [Source: 23501-j80.docx].
-        *   **NR Femto GW Role:** 
-            *   The NR Femto GW can serve as a concentrator for the N2 interface [Source: 23501-j50.docx, 23501-j60.docx].
-            *   When acting as a concentrator, the NR Femto GW appears as a gNB to the AMF and as an AMF to the NR Femto node(s) [Source: 23501-j50.docx].
+        *   **Function and Termination:** The N2 interface is used for the control plane [Source: 23501-j60.docx]. It terminates at the MWAB-gNB and UE-AMF [Source: 23501-j80.docx], or between the W-5GAN and the AMF [Source: 33501-gj0.docx, 33501-j40.doc].
+        *   **Protocol Stack:** In the case of the overlayed N2 interface, it includes NGAP and SCTP/IP layer protocols [Source: 23501-j80.docx]. It maps to NG-C as defined in TS 38.413 [Source: 23501-j50.docx].
+        *   **Defined Procedures:** The following procedures are defined over N2 [Source: 23501-ib0.docx, 23501-j50.docx]:
+            *   Procedures related to N2 Interface Management not related to an individual UE (e.g., Configuration or Reset of the N2 interface).
+            *   Procedures related with an individual UE.
+            *   Procedures related with NAS Transport.
+        *   **NR Femto GW Role:** The NR Femto GW can optionally serve as a concentrator for the N2 interface [Source: 23501-k10.docx, 23501-j50.docx]. In this role, the NR Femto GW appears as a gNB to the AMF and as an AMF to the NR Femto node(s) [Source: 23501-j50.docx].
     Sources:
         - 23501-j80.docx (score: 6.208)
-        - 23501-j60.docx (score: 5.274)
-        - 23501-j50.docx (score: 4.048)
+        - 23501-k10.docx (score: 5.274)
+        - 33501-gj0.docx (score: 5.186)
 
 ----------------------------------------
 
 [5] ID: t5 | Category: Technical
     Query: Describe the 5G registration procedure.
     Status: success
-    Elapsed: 7.08s
+    Elapsed: 86.56s
     Answer:
-        Based on the provided documents, the registration procedures are described as follows:
+        The provided context describes several different registration procedures depending on the device and access method:
         
-        *   **N5GC Device Registration**: An N5GC device connects to the W-AGF through a RG configured as a layer 2 bridge [Source: 33501-ic0.docx, 33501-j40.doc]. The W-AGF is associated with a 5GC and acts on behalf of the N5GC device during the registration process [Source: 33501-ic0.docx].
-        *   **5G-RG Registration**:
-            *   **Via W-5GAN**: The procedure is specified in TS 23.316 clause 7.2.1 [Source: 33501-ic0.docx, 33501-k10.docx]. This process uses the Untrusted non-3GPP access procedure as its basis; the 5G-RG must be authenticated by the 3GPP home network and shall support both EAP-AKA' and 5G-AKA [Source: 33501-ic0.docx].
-            *   **Via NG-RAN**: The procedure is specified in TS 23.316 clause 4.11 [Source: 33501-k10.docx].
+        *   **5G-RG Registration:**
+            *   **Via NG-RAN:** The procedure is specified in TS 23.316 [79] clause 4.11 [Source: 33501-k20.docx, 33501-k10.docx]. When connecting via 5G-RAN, the difference compared to clause 6.1 is that the UE is replaced by the 5G-RG [Source: 33501-k20.docx].
+            *   **Via W-5GAN:** The procedure is specified in TS 23.316 [79] clause 7.2.1, using the Untrusted non-3GPP access procedure as its basis [Source: 33501-ic0.docx, 33501-k20.docx]. The 5G-RG is considered equivalent to a normal UE and uses the authentication framework defined in clause 6.1.3 [Source: 33501-k20.docx]. It must support 5G-AKA and EAP-AKA’ and is authenticated by the 3GPP home network [Source: 33501-ic0.docx, 33501-k20.docx].
+            *   **W-5GAN Specific Steps:** A W-CP protocol stack message is used between the 5G-RG and the W-5GAN to encapsulate the NAS message [Source: 33501-k20.docx]. The procedure involves:
+                1. 5G-RG establishes a W-CP connection with a W-5GAN [Source: 33501-k20.docx].
+                2. (void) [Source: 33501-k20.docx].
+                3. 5G-RG sends a message via the W-CP protocol stack containing a Registration message with UE security capabilities and the SUCI; however, if a security context is available, the 5G-RG shall send the 5G-GUTI instead of the SUCI and integrity protect the Registration Request message [Source: 33501-k20.docx].
+        
+        *   **N5GC Device Registration:**
+            *   The N5GC device connects to the W-AGF via an RG configured as a layer 2 bridge [Source: 33501-ic0.docx, 33501-hf0.docx, 33501-j40.doc]. The W-AGF is associated with a 5GC and acts on behalf of the N5GC device during registration [Source: 33501-ic0.docx].
+            *   For N5GC devices behind Cable RGs, the registration procedure is described in TS 23.316 [79] clause 4.10a [Source: 33501-gj0.docx, 33501-j40.doc].
+        
+        *   **UE Registration (General/Mobility):**
+            *   Upon mobility from GERAN/UTRAN to 5GS (e.g., selecting an NG-RAN cell), the UE performs an "initial registration" as described in TS 23.502 [3] [Source: 23501-k20.docx]. The UE indicates a 5G-GUTI as identity if it has a stored valid native 5G-GUTI; otherwise, it indicates a SUCI [Source: 23501-k20.docx].
+            *   For Initial Registration and Mobility Registration on NB-IoT cells, normal 5GS procedures apply [Source: 23501-ib0.docx].
     Sources:
         - 33501-ic0.docx (score: 7.279)
+        - 33501-hf0.docx (score: 7.240)
         - 33501-ic0.docx (score: 6.888)
-        - 33501-j40.doc (score: 6.571)
 
 ----------------------------------------
 
 [6] ID: t6 | Category: Technical
     Query: What security features does 5G provide?
     Status: success
-    Elapsed: 7.09s
+    Elapsed: 21.30s
     Answer:
-        Based on the provided documents, the 5G system provides the following security features:
+        Based on the provided text, the 5G system provides the following security features:
         
-        *   **Mitigation of bidding down attacks**: The system shall ensure that attacks where an attacker makes the UE and network entities believe the other side does not support a security feature (even when both actually do) are prevented [Source: 33501-hg0.docx].
-        *   **Authentication and Authorization**: The 5G system is required to satisfy requirements regarding authentication and authorization [Source: 33501-hg0.docx, 33501-fj0.docx].
-        *   **Security Entities**:
-            *   **Security Edge Protection Proxy (SEPP)**: An entity situated at the perimeter of the PLMN [Source: 33501-fk0.docx].
-            *   **AUSF (Authentication Server Function)**: A security entity within the 5G Core network [Source: 33501-fk0.docx].
-        *   **Security Capabilities**: The system utilizes UE security capabilities, which consist of identifiers for implemented integrity and ciphering algorithms for 5G AS and 5G NAS [Source: 33501-j50.docx, 33501-ic0.docx].
-        *   **Authentication Data**: The 5G Home Environment Authentication Vector is used to authenticate the UE using 5G AKA, consisting of KAUSF, XRES*, AUTN, and RAND [Source: 33501-j40.doc].
-        *   **Secondary Cell Security**: The 5G AS Secondary Cell security context includes counters for replay protection, the UP Security Policy (network side), identifiers for selected AS level cryptographic algorithms, and cryptographic keys [Source: 33501-j40.doc].
+        *   **Mitigation of bidding down attacks:** It shall be ensured that bidding down attacks—where an attacker makes the UE and network entities believe the other side does not support a security feature—can be prevented [Source: 33501-j40.doc, 33501-hg0.docx].
+        *   **Anti-bidding down protection:** The ABBA parameter provides antibidding down protection of security features introduced in a higher release to a lower release and indicates the security features enabled in the current network [Source: 33501-fk0.docx, 33501-j40.doc].
+        *   **Internal Interface Protection:** For non-SBA interfaces internal to the 5GC, confidentiality and integrity protection is required because these interfaces transport signaling data and privacy sensitive material such as security keys, subscription data, and user data [Source: 33501-fk0.docx].
+        *   **Authentication and Authorization:** The 5G system includes requirements for Authentication and Authorization [Source: 33501-hg0.docx, 33501-fk0.docx].
     Sources:
+        - 33501-j40.doc (score: 7.845)
+        - 23501-hf0.docx (score: 7.714)
         - 33501-hg0.docx (score: 7.428)
-        - 33501-fj0.docx (score: 6.443)
-        - 33501-gk0.docx (score: 5.456)
 
 ----------------------------------------
 
 [7] ID: t7 | Category: Technical
     Query: What is 5G‑NR?
     Status: success
-    Elapsed: 7.62s
+    Elapsed: 16.88s
     Answer:
         I cannot find this information in the provided documents.
     Sources:
@@ -169,38 +174,43 @@ Skipped:       1
 [8] ID: e1 | Category: Edge
     Query: What is AMF?
     Status: success
-    Elapsed: 10.99s
+    Elapsed: 52.59s
     Answer:
-        The AMF is the Access and Mobility Management function [Source: 23501-hf0.docx].
+        The Access and Mobility Management function (AMF) [Source: 23501-j50.docx] includes the following functionality, which may be supported in a single instance [Source: 23501-j50.docx]:
         
-        It includes the following functionality:
-        *   Termination of RAN CP interface (N2) [Source: 23501-hf0.docx].
-        *   AMF selection functionality to select an AMF for relocation or because the initially selected AMF was not appropriate to serve the UE (e.g. for roaming subscriber) [Source: 23501-k10.docx, 23501-hf0.docx].
-        *   Provision of the UE-AMBR provided by PCF to (R)AN if available [Source: 23501-hf0.docx].
-        *   Use of the N14 interface for AMF re-allocation and AMF to AMF information transfer, which may be intra-PLMN or inter-PLMN [Source: 23501-hf0.docx].
-        *   Optional functionality to support monitoring in roaming scenarios, such as the normalization of reports according to roaming agreements between VPLMN and HPLMN [Source: 23501-hf0.docx, 23501-j70.docx].
+        *   Termination of RAN CP interface (N2) [Source: 23501-j50.docx, 23501-hf0.docx].
+        *   Termination of NAS (N1), NAS ciphering and integrity protection [Source: 23501-j50.docx].
+        *   Registration management [Source: 23501-j50.docx].
+        *   Connection management [Source: 23501-j50.docx].
         
-        Additionally, the AMF hosts the following main functions:
-        *   NAS signalling termination [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   NAS signalling security [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   AS Security control [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   Inter CN node signalling for mobility between 3GPP access networks [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   Idle mode UE Reachability, including control and execution of paging retransmission [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   Registration Area management [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   Support of intra-system and inter-system mobility [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   Access Authentication [Source: 38300-ia0.docx, 38300-gl0.docx]
-        *   Access Authorization including check of roaming rights [Source: 38300-gl0.docx]
+        Additionally, the AMF hosts these main functions [Source: 38300-gm0.docx, 38300-j30.docx]:
+        *   NAS signalling termination [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   NAS signalling security [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   AS Security control [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   Inter CN node signalling for mobility between 3GPP access networks [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   Idle mode UE Reachability, including control and execution of paging retransmission [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   Registration Area management [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   Support of intra-system and inter-system mobility [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   Access Authentication [Source: 38300-gm0.docx, 38300-j30.docx].
+        *   Access Authorization including check of roaming rights [Source: 38300-j30.docx].
+        
+        The AMF also supports the following:
+        *   **AMF selection functionality:** To select an AMF for relocation or if the initially selected AMF was not appropriate to serve the UE (e.g. due to change of Allowed NSSAI) [Source: 23501-k10.docx, 23501-j80.docx].
+        *   **N14 interface:** Used for AMF re-allocation and AMF to AMF information transfer, which can be intra-PLMN or inter-PLMN [Source: 23501-hf0.docx].
+        *   **UE-AMBR:** The AMF provides the UE-AMBR provided by PCF to (R)AN if available [Source: 23501-hf0.docx].
+        *   **Optional functionality:** The AMF may provide support for AMF overload control, Network Slice restriction, Network Slice instance restriction based on NWDAF analytics, and Disaster Roaming [Source: 23501-j50.docx].
+        *   **Roaming monitoring:** The AMF may include functionality to normalize reports according to roaming agreements between VPLMN and HPLMN [Source: 23501-j60.docx, 23501-hf0.docx].
     Sources:
         - 23501-k10.docx (score: 5.140)
-        - 23501-hf0.docx (score: 4.335)
-        - 38300-ia0.docx (score: 4.233)
+        - 23501-j50.docx (score: 4.640)
+        - 23501-j80.docx (score: 4.466)
 
 ----------------------------------------
 
 [9] ID: e2 | Category: Edge
     Query: Define NR.
     Status: success
-    Elapsed: 7.11s
+    Elapsed: 23.10s
     Answer:
         I cannot find this information in the provided documents.
     Sources:
@@ -210,60 +220,73 @@ Skipped:       1
 [10] ID: e3 | Category: Edge
     Query: Tell me everything about 5G security.
     Status: success
-    Elapsed: 8.82s
+    Elapsed: 43.08s
     Answer:
-        Based on the provided documents, information regarding 5G security is as follows:
+        Based on the provided documents, 5G security includes the following:
         
-        **Security Architecture and Scope**
-        * The security architecture specifies security features, mechanisms, and procedures for the 5G System, the 5G Core, and the 5G New Radio [Source: 33501-gk0.docx].
-        * The 5G System architecture includes the following security entities:
-            * **Security Edge Protection Proxy (SEPP):** The entity located at the perimeter of the PLMN [Source: 33501-fj0.docx].
-            * **AUSF:** AUthentication Server Function, located in the 5G Core network [Source: 33501-fj0.docx].
+        **Security Entities**
+        *   **At the perimeter of the 5G Core network:** The Security Edge Protection Proxy (SEPP) is the entity situated at the perimeter of the PLMN [Source: 33501-fk0.docx].
+        *   **In the 5G Core network:** The 5G System architecture introduces the following entities:
+            *   AUSF: AUthentication Server Function [Source: 33501-gk0.docx, 33501-j40.doc, 33501-fk0.docx]
+            *   ARPF: Authentication credential Repository and Processing Function [Source: 33501-gk0.docx, 33501-j40.doc]
+            *   SIDF: Subscription Identifier De-concealing Function [Source: 33501-gk0.docx, 33501-j40.doc]
+            *   SEAF: SEcurity Anchor Function [Source: 33501-gk0.docx, 33501-j40.doc]
         
         **Security Contexts and Data**
-        * **5G security context:** A state established locally at the UE and a serving network domain, represented by "5G security context data" stored at both [Source: 33501-j60.docx].
-            * This data consists of the 5G NAS security context, and the 5G AS security context for 3GPP access and/or non-3GPP access [Source: 33501-j60.docx].
-        * **5G AS Secondary Cell security context:** This includes counters used for replay protection, the UP Security Policy at the network side, identifiers for selected AS level cryptographic algorithms for the secondary cell, and cryptographic keys at the AS level for the secondary cell with their identifiers [Source: 33501-gk0.docx, 33501-j40.doc].
-        * **5G Home Environment Authentication Vector:** Data used for authenticating the UE using 5G AKA, consisting of RAND, AUTN, XRES*, and KAUSF [Source: 33501-gk0.docx, 33501-j40.doc].
+        *   **5G security context:** This is the state established locally at a serving network domain and the UE, represented by "5G security context data" stored at both [Source: 33501-k00.docx]. This data consists of the 5G NAS security context, and the 5G AS security context for 3GPP access and/or non-3GPP access [Source: 33501-k00.docx].
+        *   **5G AS Secondary Cell security context:** This consists of counters used for replay protection, the UP Security Policy at the network side, the identifier of the selected AS level cryptographic algorithms for the secondary cell, and the cryptographic keys at the AS level for the secondary cell with their identifiers [Source: 33501-hf0.docx, 33501-j40.doc].
+        *   **5G Home Environment Authentication Vector:** This is authentication data used for authenticating the UE using 5G AKA, consisting of KAUSF, XRES*, AUTN, and RAND [Source: 33501-hf0.docx, 33501-j40.doc].
         
-        **Security Requirements and Procedures**
-        * **General Requirements:**
-            * **Bidding down attacks:** It must be ensured that attacks where an attacker makes the UE and network entities believe the other does not support a security feature (when both actually do) are prevented [Source: 33501-fk0.docx].
-            * **Transmission restrictions:** Non-current 5G security contexts or 5G authentication vectors shall not be transmitted to a different 5G serving network domain [Source: 33501-fj0.docx].
-        * **Interworking and Access:**
-            * **EPS Interworking:** Only interaction between 5G and EPS serving network domains is addressed; no direct interworking between 5G networks and generations prior to EPS is foreseen [Source: 33501-fj0.docx].
-            * **5G-RG:** The 5G-RG acts as a 5G UE and connects to the 5GC via Fixed Wireless Access (FWA) or wireline access network (W-5GAN), reusing existing security procedures [Source: 33501-j40.doc].
+        **Security Procedures and Requirements**
+        *   **Transmission Restrictions:** Non-current 5G security contexts or a 5G authentication vector shall not be transmitted to a different 5G serving network domain [Source: 33501-hf0.docx].
+        *   **Interworking:** Interaction is addressed between 5G and EPS serving network domains, as no direct interworking is foreseen between 5G networks and networks from generations prior to EPS [Source: 33501-hf0.docx].
+        *   **5G-RG:** The 5G-RG can connect to 5GC via Fixed Wireless Access (FWA) or wireline access network (W-5GAN) acting as a 5G UE, reusing existing security procedures defined in the document [Source: 33501-j40.doc].
+        *   **Network Automation (eNA):** Security requirements and procedures are provided for Network Automation features for the 5G system (5GS) [Source: 33501-ic0.docx, 33501-hg0.docx].
+        
+        **Scope of Security Architecture**
+        The security architecture specifies security mechanisms and features for the 5G Core, the 5G System, and the security procedures performed within the 5G New Radio and the 5G System including the 5G Core [Source: 33501-fj0.docx].
     Sources:
-        - 33501-j60.docx (score: 3.389)
-        - 33501-gk0.docx (score: 3.302)
-        - 33501-j40.doc (score: 3.302)
+        - 33501-gk0.docx (score: 3.411)
+        - 33501-j40.doc (score: 3.411)
+        - 33501-k00.docx (score: 3.389)
 
 ----------------------------------------
 
 [11] ID: e4 | Category: Edge
     Query: Summarize the 5G architecture.
     Status: success
-    Elapsed: 7.51s
+    Elapsed: 49.54s
     Answer:
-        Based on the provided documents, the 5G architecture can be summarized as follows:
+        Based on the provided text, the 5G architecture can be summarized as follows:
         
-        *   **General Definition and Purpose:** The 5G System (5GS) architecture is defined to provide services and data connectivity [Source: 23501-ic0.docx]. It is designed to support deployments utilizing Software Defined Networking and Network Function Virtualization [Source: 23501-k00.docx].
-        *   **Key Architectural Concepts:**
-            *   **Service-Based Interactions:** The architecture leverages service-based interactions between Control Plane (CP) Network Functions where identified [Source: 23501-k00.docx].
-            *   **Scope:** The system architecture covers various aspects, including mobility within the 5GS, policy control and charging, QoS, authentication, and interworking between the 5GS and EPS, across both roaming and non-roaming scenarios [Source: 23501-ic0.docx].
-        *   **Specific Implementations:** For N5CW devices, the reference architecture is based on general 5GS architecture diagrams and identifies the main network functions required to support 5GC access [Source: 23501-j70.docx, 23501-hf0.docx].
-        *   **Security:** The security architecture specifies the security mechanisms, features, and procedures performed within the 5G Core, the 5G System, and the 5G New Radio [Source: 33501-fk0.docx].
+        *   **General Definition and Purpose**: The 5G System (5GS) architecture is defined to provide data connectivity and services [Source: 23501-ic0.docx], supporting deployments that use techniques such as Software Defined Networking and Network Function Virtualization [Source: 23501-k00.docx].
+        *   **Design Principles**: The architecture is defined as service-based [Source: 23501-k10.docx]. It leverages service-based interactions between Control Plane (CP) Network Functions where identified [Source: 23501-k00.docx]. Interaction between network functions is represented in two ways:
+            *   A service-based representation, where authorized network functions can access the services of others (e.g., AMF) within the Control Plane [Source: 23501-k10.docx].
+            *   Point-to-point reference points, used where necessary [Source: 23501-k10.docx].
+        *   **Reference Points**: The 5G System Architecture includes the following specific reference points [Source: 23501-hf0.docx]:
+            *   **N1**: Between the UE and the AMF.
+            *   **N2**: Between the (R)AN and the AMF.
+            *   **N3**: Between the (R)AN and the UPF.
+            *   **N4**: Between the SMF and the UPF.
+            *   **N6**: Between the UPF and a Data Network.
+            *   **N9**: Between two UPFs.
+        *   **Specialized Architectures**: The 5G System Architecture is extended or defined specifically to support various features, including:
+            *   **Energy Efficiency and Energy Saving**: This includes a non-roaming reference architecture using service-based interfaces [Source: 23501-j70.docx].
+            *   **Wireline Access Network**: The 5G-RG can connect to the 5GC via NG RAN, W-5GAN, or both [Source: 23501-j80.docx].
+            *   **N5CW Devices**: Specific main network functions are required to support 5GC access from these devices [Source: 23501-k10.docx, 23501-hf0.docx].
+            *   **Proximity based Services (ProSe)**: Defined in TS 23.304 [Source: 23501-ib0.docx].
+            *   **Edge Computing**: Enhancements are described in TS 23.548 and clause 5.13 [Source: 23501-ib0.docx].
     Sources:
+        - 23501-j70.docx (score: 5.208)
+        - 23501-k10.docx (score: 5.112)
         - 23501-k00.docx (score: 4.929)
-        - 23501-j70.docx (score: 4.448)
-        - 23501-hf0.docx (score: 4.197)
 
 ----------------------------------------
 
 [12] ID: e5 | Category: Edge
     Query: What is the difference between QoS and QoE in 5G?
     Status: success
-    Elapsed: 7.40s
+    Elapsed: 23.75s
     Answer:
         I cannot find this information in the provided documents.
     Sources:
@@ -273,19 +296,35 @@ Skipped:       1
 [13] ID: e6 | Category: Edge
     Query: Explain the 5G authentication procedure step by step.
     Status: success
-    Elapsed: 6.84s
+    Elapsed: 67.73s
     Answer:
-        I cannot find this information in the provided documents.
+        Because the provided context describes different authentication procedures depending on the device and access method, the steps are as follows:
+        
+        **1. 5G-RG Authentication via W-5GAN**
+        *   **Step 1:** The 5G-RG establishes a W-CP connection with a W-5GAN (the details of this connection are out of the scope of 3GPP) [Source: 33501-ib0.docx, 33501-k10.docx, 33501-k00.docx].
+        *   **Step 2:** (void) [Source: 33501-ib0.docx, 33501-k10.docx, 33501-k00.docx].
+        *   **Step 3:** The 5G-RG sends a message using the W-CP protocol stack containing a Registration message that includes the SUCI and UE security capabilities [Source: 33501-ib0.docx, 33501-k10.docx, 33501-k00.docx]. If a security context is available, the 5G-RG must integrity protect the Registration Request message and send the 5G-GUTI instead of the SUCI [Source: 33501-k10.docx, 33501-k00.docx].
+        
+        **2. 5G AKA Authentication Procedure**
+        *   For each Nudm_UEAuthentication_Get Request, the UDM/ARPF shall create a 5G HE AV [Source: 33501-fj0.docx].
+        
+        **3. Authentication for Non-5G Capable (N5GC) devices**
+        *   The N5GC device connects to the W-AGF via a RG configured as a layer 2 bridge [Source: 33501-j40.doc].
+        *   The W-AGF creates the registration request on behalf of the N5GC device [Source: 33501-hf0.docx].
+        *   5G related parameters, including ABBA and ngKSI, are not sent to the N5GC device [Source: 33501-hf0.docx].
     Sources:
+        - 33501-ib0.docx (score: 5.003)
+        - 33501-fj0.docx (score: 4.500)
+        - 33501-k10.docx (score: 3.741)
 
 ----------------------------------------
 
 [14] ID: o1 | Category: Out-of-Scope
     Query: Who is the CEO of Nokia?
     Status: success
-    Elapsed: 3.14s
+    Elapsed: 6.20s
     Answer:
-        I cannot find sufficient information to answer this question in the provided 3GPP documents.
+        I cannot answer this question reliably based on the provided documents.
     Sources:
 
 ----------------------------------------
@@ -293,9 +332,9 @@ Skipped:       1
 [15] ID: o2 | Category: Out-of-Scope
     Query: How much does a 5G base station cost?
     Status: success
-    Elapsed: 3.39s
+    Elapsed: 14.16s
     Answer:
-        I cannot find sufficient information to answer this question in the provided 3GPP documents.
+        I cannot answer this question reliably based on the provided documents.
     Sources:
 
 ----------------------------------------
@@ -303,9 +342,9 @@ Skipped:       1
 [16] ID: o3 | Category: Out-of-Scope
     Query: What is the weather today?
     Status: success
-    Elapsed: 3.42s
+    Elapsed: 5.00s
     Answer:
-        I cannot find sufficient information to answer this question in the provided 3GPP documents.
+        I cannot answer this question reliably based on the provided documents.
     Sources:
 
 ----------------------------------------
@@ -313,9 +352,9 @@ Skipped:       1
 [17] ID: o4 | Category: Out-of-Scope
     Query: Explain the meaning of life.
     Status: success
-    Elapsed: 2.86s
+    Elapsed: 4.23s
     Answer:
-        I cannot find sufficient information to answer this question in the provided 3GPP documents.
+        I cannot answer this question reliably based on the provided documents.
     Sources:
 
 ----------------------------------------
@@ -323,109 +362,86 @@ Skipped:       1
 [18] ID: s1 | Category: Stress
     Query: What is 5G?
     Status: success
-    Elapsed: 7.69s
+    Elapsed: 15.45s
     Answer:
-        Based on the provided documents, 5G is described in the following terms:
-        
-        *   **5G System:** Provides data connectivity and services, covering aspects such as mobility within 5GS, QoS, policy control and charging, authentication, and system-wide features (e.g., Location Services, Emergency Services, and SMS), including both roaming and non-roaming scenarios and interworking between 5GS and EPS [Source: 23501-k20.docx].
-        *   **5G Architecture:** Defined as service-based, where network functions in the Control Plane (such as AMF) allow other authorized network functions to access their services [Source: 23501-k20.docx].
-        *   **5G Core Network:** The core network specified in the documents which connects to a 5G Access Network [Source: 23501-k20.docx].
-        *   **5G Access Network:** An access network connecting to a 5G Core Network, comprising a non-3GPP AN and/or a NG-RAN [Source: 23501-k10.docx, 23501-k00.docx].
+        I cannot find this information in the provided documents.
     Sources:
-        - 23501-k20.docx (score: 7.646)
-        - 23501-k20.docx (score: 7.018)
-        - 23501-k20.docx (score: 6.573)
 
 ----------------------------------------
 
 [19] ID: s2 | Category: Stress
     Query: Tell me about the AMF, SMF, and UPF.
     Status: success
-    Elapsed: 12.02s
+    Elapsed: 83.57s
     Answer:
         Based on the provided documents, here is the information regarding the AMF, SMF, and UPF:
         
-        **Access and Mobility Management Function (AMF)**
-        The AMF includes the following functionalities:
-        *   **Signalling and Security:** Termination of NAS (N1), NAS ciphering and integrity protection, NAS signalling termination, NAS signalling security, AS Security control, and Security Anchor Functionality (SEAF) [Source: 23501-k10.docx, 38300-j00.docx].
-        *   **Management:** Registration management, Connection management, Reachability management (including Idle mode UE Reachability and paging retransmission), Mobility Management (including support for intra-system and inter-system mobility, and Registration Area management), and Location Services management for regulatory services [Source: 23501-k10.docx, 38300-j00.docx].
-        *   **Access and Authorization:** Access Authentication and Access Authorization, including the check of roaming rights [Source: 23501-k10.docx, 38300-j00.docx].
-        *   **Interfacing and Transport:** Termination of RAN CP interface (N2), providing transport for SM messages between UE and SMF, acting as a transparent proxy for routing SM messages, providing transport for SMS messages between UE and SMSF, and providing transport for Location Services messages between UE/RAN and LMF [Source: 23501-k10.docx].
-        *   **Other Functions:** SMF selection, support for Network Slicing, selection of CIoT 5GS optimisations (both Control Plane and User Plane), support for restriction of use of Enhanced Coverage, Lawful intercept, EPS Bearer ID allocation for interworking with EPS, UE mobility event notification, S-NSSAIs per TA mapping notification, and provisioning of external parameters [Source: 23501-k10.docx, 38300-j00.docx].
-        *   **Relay Capabilities:** The AMF may relay information to the SMF as part of session management signalling for a new PDU Session [Source: 23501-ib0.docx].
+        **AMF (Access and Mobility Management Function)**
+        *   **Main Functions:** The AMF hosts functions including NAS signalling termination and security, AS Security control, Inter CN node signalling for mobility between 3GPP access networks, Idle mode UE Reachability (including paging retransmission control and execution), Registration Area management, support of intra-system and inter-system mobility, Access Authentication, Access Authorization (including roaming rights checks), mobility management control (policies and subscription), support of Network Slicing, SMF selection, and selection of CIoT 5GS optimisations [Source: 38300-gl0.docx].
+        *   **Additional Capabilities:** The AMF may provide support for energy related features (as described in clause 5.51) [Source: 23501-k20.docx, 23501-k00.docx]. It is extended with new functionality discussed in clause 5.32 [Source: 23501-ic0.docx] and may relay information to the SMF as part of session management signalling for a new PDU Session [Source: 23501-ic0.docx].
+        *   **Interactions:** The AMF supports interactions towards the CHF as defined in TS 32.256 [Source: 23501-k20.docx, 23501-j60.docx].
         
-        **Session Management Function (SMF)**
-        The SMF hosts the following main functions:
-        *   Session Management [Source: 38300-i90.docx].
-        *   UE IP address allocation and management [Source: 38300-i90.docx].
-        *   Selection and control of UP function [Source: 38300-i90.docx].
-        *   Configuration of traffic steering at UPF to route traffic to the proper destination [Source: 38300-i90.docx].
-        *   Control part of policy enforcement and QoS [Source: 38300-i90.docx].
-        *   Downlink Data Notification [Source: 38300-i90.docx].
-        *   **Information Acquisition:** The SMF may use N4 to acquire information regarding the user plane interfaces of UPF(s) [Source: 23501-ib0.docx].
+        **SMF (Session Management Function)**
+        *   **Main Functions:** The SMF hosts Session Management, UE IP address allocation and management, selection and control of UP function, configuration of traffic steering at UPF to route traffic to the proper destination, the control part of policy enforcement and QoS, and Downlink Data Notification [Source: 38300-he0.docx].
+        *   **Detailed Functionality:** Its functionality includes Session Management (e.g., Session Establishment, modify and release, including tunnel maintain between UPF and AN node) and UE IP address allocation & management (including optional Authorization), where the IP address may be received from an external data network or a UPF [Source: 23501-k20.docx, 23501-j70.docx]. It is also extended with new functionality discussed in clause 5.32 [Source: 23501-ic0.docx].
+        *   **UPF Management:** The SMF performs the selection and reselection of the UPF for UE traffic offloading, UE mobility, or PDU session establishment [Source: 23501-j80.docx, 23501-k20.docx]. This is done by considering UPF deployment scenarios (such as distributed UPF at or close to the Access Network site or centrally located UPF) and, optionally, Energy-Related NF profile attributes of the UPF [Source: 23501-hf0.docx, 23501-j80.docx, 23501-k20.docx]. The SMF can acquire information regarding the user plane interfaces of UPF(s) using N4 [Source: 23501-ic0.docx].
+        *   **Interactions:** The SMF supports interactions towards the CHF as defined in TS 32.255 [Source: 23501-j60.docx]. It uses the N4 reference point to control the UPF's collection and reporting of usage data [Source: 23501-k20.docx, 23501-j60.docx].
         
-        **User Plane Function (UPF)**
-        The UPF hosts the following main functions:
-        *   Packet routing & forwarding [Source: 38300-j00.docx].
-        *   Packet inspection and the User plane part of Policy rule enforcement [Source: 38300-j00.docx].
-        *   Anchor point for Intra-/Inter-RAT mobility (when applicable) [Source: 38300-j00.docx].
-        *   External PDU session point of interconnect to Data Network [Source: 38300-j00.docx].
-        *   Traffic usage reporting [Source: 38300-j00.docx].
-        *   Uplink classifier to support routing traffic flows to a data network [Source: 38300-j00.docx].
-        *   Branching point to support multi-homed PDU session [Source: 38300-j00.docx].
-        *   QoS handling for user plane [Source: 38300-j00.docx].
+        **UPF (User Plane Function)**
+        *   **Main Functions:** The UPF hosts packet routing & forwarding, packet inspection and the User plane part of Policy rule enforcement, traffic usage reporting, an external PDU session point of interconnect to Data Network, an anchor point for Intra-/Inter-RAT mobility (when applicable), an uplink classifier for routing traffic flows to a data network, a branching point for multi-homed PDU sessions, and QoS handling for the user plane [Source: 38300-gl0.docx].
+        *   **Capabilities:** The UPF supports functionality to collect and report usage data to the SMF [Source: 23501-k20.docx, 23501-j60.docx]. It also supports Performance Measurement Functionality (PMF), which the UE may use to obtain access performance measurements over the user-plane of non-3GPP access and/or 3GPP access [Source: 23501-ic0.docx].
     Sources:
-        - 23501-ib0.docx (score: 4.556)
-        - 38300-i90.docx (score: 3.692)
-        - 38300-j00.docx (score: 3.034)
+        - 23501-ic0.docx (score: 5.579)
+        - 23501-k20.docx (score: 5.247)
+        - 23501-j60.docx (score: 5.098)
 
 ----------------------------------------
 
 [20] ID: s3 | Category: Stress
     Query: What is the role of the AMF in 5G? Also explain how it interacts with the gNB.
     Status: success
-    Elapsed: 17.49s
+    Elapsed: 47.47s
     Answer:
-        Based on the provided documents, the role and interactions of the AMF are as follows:
+        Based on the provided documents:
         
         **Role of the AMF**
-        The Access and Mobility Management function (AMF) includes the following functionalities:
-        *   Registration management [Source: 23501-k20.docx].
-        *   Connection management [Source: 23501-k20.docx].
-        *   Termination of NAS (N1), as well as NAS ciphering and integrity protection [Source: 23501-k20.docx].
-        *   Termination of the RAN CP interface (N2) [Source: 23501-k20.docx].
+        *   The AMF is a network function within the Control Plane of the service-based 5G architecture [Source: 23501-k00.docx].
+        *   The AMF serves as the single entity serving a 5G-RG that is simultaneously connected to the same 5G Core Network of a PLMN over a 3GPP access and a W-5GAN access [Source: 23501-k10.docx].
+        *   The AMF maintains a NAS signalling connection with the 5G-RG over the W-5GAN after PDU Sessions for the 5G-RG over that access have been handed over to 3GPP access or released [Source: 23501-j80.docx, 23501-k10.docx].
+        *   The AMF provides the 5G-AN node with weight factors for each TNL association, requests the addition or removal of TNL associations, and indicates to the 5G-AN node which TNL associations are used for UE-associated versus non-UE associated signalling [Source: 23501-j70.docx].
         
-        **Interactions with the gNB**
-        *   **Security Context Establishment:** When the AS security context is to be established in the gNB, the AMF sends the complete UE 5G security capabilities (all bits for every capability defined in TS 24.501 and received in NAS signalling) to the gNB [Source: 38300-he0.docx].
-        *   **Handover Procedures:** The gNB/ng-eNB sends a Handover Required message to the AMF, which includes the UE's identity [Source: 33501-k00.docx, 33501-j40.doc].
-        *   **Security Capability Verification:** 
-            *   The target gNB/ng-eNB sends the UE's 5G security capabilities (received from the source gNB/ng-eNB) to the AMF within the Path-Switch message [Source: 33501-j60.docx].
-            *   The AMF verifies if these received capabilities match the UE's 5G security capabilities stored locally [Source: 33501-gk0.docx, 33501-j60.docx].
-            *   If a mismatch occurs, the AMF sends its locally stored 5G security capabilities to the target gNB/ng-eNB via the Path-Switch Acknowledge message [Source: 33501-gk0.docx].
+        **Interaction with the gNB**
+        *   **Security Context Establishment:** When establishing the AS security context in the gNB, the AMF sends the complete UE 5G security capabilities (all bits for every capability defined in TS 24.501 received in NAS signalling) to the gNB [Source: 38300-he0.docx].
+        *   **Handover and Security Verification:**
+            *   The gNB/ng-eNB sends a Handover Required message to the AMF, which includes the UE's identity [Source: 33501-fj0.docx, 33501-j40.doc].
+            *   In a Path-Switch message, the target gNB/ng-eNB sends the UE's 5G security capabilities (received from the source gNB/ng-eNB) to the AMF [Source: 33501-j60.docx].
+            *   The AMF verifies if these received capabilities match the UE's 5G security capabilities stored locally [Source: 33501-j60.docx, 33501-j40.doc].
+            *   If a mismatch occurs, the AMF sends its locally stored 5G security capabilities to the target gNB/ng-eNB via a Path-Switch Acknowledge message; the AMF may also raise an alarm or log the event [Source: 33501-j40.doc].
+        *   **Security Key Association:** The target gNB/ng-eNB associates the NCC value received from the AMF with the KgNB to derive the 5G AS security context [Source: 33501-fk0.docx].
     Sources:
         - 38300-he0.docx (score: 4.941)
-        - 33501-k00.docx (score: 4.013)
-        - 33501-gk0.docx (score: 4.001)
+        - 33501-fj0.docx (score: 4.013)
+        - 33501-j40.doc (score: 4.001)
 
 ----------------------------------------
 
 [21] ID: s4 | Category: Stress
     Query: Explain 5G QoS in one sentence.
     Status: success
-    Elapsed: 15.14s
+    Elapsed: 47.90s
     Answer:
-        Based on the provided documents, 5G QoS involves the use of a 5G QoS Flow as the finest granularity for QoS forwarding treatment in the 5G System [Source: 23501-k10.docx, 23501-hf0.docx], utilizing parameters such as the 5G QoS Identifier (5QI), which is a scalar referencing specific forwarding behaviors or node-specific parameters [Source: 23501-j80.docx, 23501-k10.docx, 23501-hf0.docx], and the Allocation and Retention Priority (ARP), which provides information on priority levels, pre-emption capability, and vulnerability for resource management [Source: 23501-hf0.docx].
+        The 5G QoS model is based on QoS Flows, which represent the finest granularity of QoS differentiation in the PDU Session [Source: 23501-ib0.docx, 23501-k10.docx, 23501-k20.docx].
     Sources:
-        - 23501-j80.docx (score: 4.290)
-        - 23501-k10.docx (score: 4.021)
-        - 23501-k10.docx (score: 3.908)
+        - 23501-k00.docx (score: 4.290)
+        - 23501-ib0.docx (score: 4.255)
+        - 23501-ic0.docx (score: 4.174)
 
 ----------------------------------------
 
 [22] ID: s5 | Category: Stress
     Query: What are the frequency bands for NR?
     Status: success
-    Elapsed: 7.23s
+    Elapsed: 21.63s
     Answer:
         I cannot find this information in the provided documents.
     Sources:
@@ -435,7 +451,7 @@ Skipped:       1
 [23] ID: s6 | Category: Stress
     Query: What is the difference between 5G NSA and SA?
     Status: success
-    Elapsed: 7.24s
+    Elapsed: 23.34s
     Answer:
         I cannot find this information in the provided documents.
     Sources:
@@ -445,7 +461,7 @@ Skipped:       1
 [24] ID: s7 | Category: Stress
     Query: What is the maximum data rate of 5G?
     Status: success
-    Elapsed: 6.40s
+    Elapsed: 16.48s
     Answer:
         I cannot find this information in the provided documents.
     Sources:
@@ -455,9 +471,9 @@ Skipped:       1
 [25] ID: s8 | Category: Stress
     Query: How does beamforming work in 5G?
     Status: success
-    Elapsed: 11.79s
+    Elapsed: 24.17s
     Answer:
-        I cannot find sufficient information to answer this question in the provided 3GPP documents.
+        I cannot answer this question reliably based on the provided documents.
     Sources:
 
 ----------------------------------------
@@ -472,17 +488,10 @@ Skipped:       1
 [27] ID: s10 | Category: Stress
     Query: What is the 3GPP release 18?
     Status: success
-    Elapsed: 7.08s
+    Elapsed: 22.87s
     Answer:
-        Based on the provided documents, Release 18 is associated with the following technical specifications:
-        
-        *   **3GPP TS 38.300** [Source: 38300-i70.docx, 38300-i80.docx, 38300-i90.docx, 38300-ia0.docx]
-        *   **3GPP TS 33.501**: Security architecture and procedures for 5G system [Source: 33501-ic0.docx, 33501-ib0.docx]
-        *   **3GPP TS 23.501**: System architecture for the 5G System (5GS); Stage 2 [Source: 23501-ib0.docx, 23501-ic0.docx]
+        I cannot find this information in the provided documents.
     Sources:
-        - 38300-i70.docx (score: 7.448)
-        - 38300-i80.docx (score: 7.427)
-        - 33501-ic0.docx (score: 7.393)
 
 ----------------------------------------
 

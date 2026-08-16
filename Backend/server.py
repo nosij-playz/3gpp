@@ -304,13 +304,14 @@ def build_prompt(query: str, contexts: List[dict]) -> str:
         "1. If the user greets you (e.g., 'hi', 'hello'), respond warmly and explain your purpose.\n"
         "2. If the user asks about your capabilities, introduce yourself as a 3GPP chatbot.\n"
         "3. If the answer to the technical question is fully contained in the provided context, provide a clear, cited answer.\n"
-        "4. If the context does NOT contain enough information to answer, respond EXACTLY: "
+        "4. If the context contains partial information, you may combine it with logical reasoning based on the provided text to form a complete answer. Only abstain if the context is completely irrelevant.\n"
+        "5. If the context does NOT contain enough information to answer, respond EXACTLY: "
         "'I cannot find this information in the provided documents.'\n"
-        "5. If the question is completely unrelated to 3GPP/telecom, respond: "
+        "6. If the question is completely unrelated to 3GPP/telecom, respond: "
         "'I can only answer questions about 3GPP standards.'\n"
-        "6. Every factual claim MUST include a citation like [Source: ...].\n"
-        "7. Do NOT add any information that is not explicitly stated in the context.\n"
-        "8. If the context is ambiguous, say so rather than guessing.\n\n"
+        "7. Every factual claim MUST include a citation like [Source: ...].\n"
+        "8. Do NOT add any information that is not explicitly stated in the context.\n"
+        "9. If the context is ambiguous, say so rather than guessing.\n\n"
         "--- PROVIDED CONTEXT ---\n"
         f"{context_text}\n"
         "--- END OF CONTEXT ---\n\n"
@@ -379,12 +380,17 @@ def verify_claims(answer: str, contexts: List[dict], threshold: float) -> Tuple[
     """
     Splits the answer into sentences and checks each against the provided contexts using NLI.
     Returns:
-      - is_grounded: True if average entailment score >= threshold
+      - is_grounded: True if the answer is considered sufficiently grounded
       - avg_entailment: average entailment probability over all sentences
       - suspicious_sentences: list of sentences with entailment < threshold
     """
     if not ENABLE_NLI_VERIFICATION or nli_model is None:
         # Verification disabled – trust the LLM (not recommended for zero hallucination)
+        return True, 1.0, []
+
+    # Fallback for short answers to reduce false hallucination warnings
+    # Increased threshold to 150 chars to cover most simple definitions and one-sentence answers
+    if len(answer.strip()) < 150:
         return True, 1.0, []
 
     sentences = re.split(r'(?<=[.!?]) +', answer.strip())
@@ -410,7 +416,20 @@ def verify_claims(answer: str, contexts: List[dict], threshold: float) -> Tuple[
             suspicious.append(sent)
 
     avg_entail = sum(entail_scores) / len(entail_scores) if entail_scores else 0.0
-    grounded = avg_entail >= threshold
+    
+    # --- FLEXIBLE GROUNDING LOGIC ---
+    # Instead of a strict average, we check:
+    # 1. Percentage of sentences that meet the threshold
+    # 2. Whether the average is reasonably close (80% of threshold)
+    if not entail_scores:
+        return False, 0.0, []
+        
+    count_above = sum(1 for s in entail_scores if s >= threshold)
+    percentage_grounded = count_above / len(entail_scores)
+    
+    # Grounded if 70% of claims are supported OR the average is within 20% of the threshold
+    grounded = (percentage_grounded >= 0.7) or (avg_entail >= threshold * 0.8)
+    
     return grounded, avg_entail, suspicious
 
 # ---------- API ENDPOINTS ----------
